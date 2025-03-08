@@ -10,10 +10,10 @@ import Product from '../component/card';
 
 const categoryList = ['Physics', 'Chemistry', 'Biology', 'Stationery'];
 const items = [
-  { title: 'Physics 2nd Edition', price: '150฿', category: 'Physics' },
-  { title: 'Biology Book', price: '170฿', category: 'Biology' },
-  { title: 'Drawing Table', price: '2500฿', category: 'Stationery' },
-  { title: 'Macroeconomics 10th Ed', price: '1200฿', category: 'Economy' },{ title: 'Macroeconomics 10th Ed', price: '1200฿', category: 'Economy' },{ title: 'Macroeconomics 10th Ed', price: '1200฿', category: 'Economy' },{ title: 'Macroeconomics 10th Ed', price: '1200฿', category: 'Economy' },{ title: 'Macroeconomics 10th Ed', price: '1200฿', category: 'Economy' },{ title: 'Macroeconomics 10th Ed', price: '1200฿', category: 'Economy' },
+  { title: 'Physics 2nd Edition', price: '150฿', category: 'Physics',id:1 },
+  { title: 'Biology Book', price: '170฿', category: 'Biology',id:2 },
+  { title: 'Drawing Table', price: '2500฿', category: 'Stationery',id:3 },
+  { title: 'Macroeconomics 10th Ed', price: '1200฿', category: 'Economy',id:4 },
 ];
 
 export default function Main() {
@@ -140,9 +140,10 @@ export default function Main() {
         ))}
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 px-2 no-scrollbar" >
+      <div className="grid grid-cols-1  gap-6 mt-6 px-2 no-scrollbar" >
         {items.map((item, index) => (
           <Product
+            id={item.id}
             key={index}
             product_name={item.title}
             price={item.price}

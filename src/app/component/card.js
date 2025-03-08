@@ -1,9 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 
-export default function Product({ product_name="Unknown", imageSrc = "/ph.jpg", alt = "product", category = "", seller, price }) {
+export default function Product({ id =NaN ,product_name="Unknown", imageSrc = "/ph.jpg", alt = "product", category = "", seller, price }) {
   return (
     
-      <button>
+      <Link href={`/shop/${id}`}>
         <div className="flex border rounded-lg p-4 shadow-md">
           <div className="flex-shrink-0">
             <Image src={imageSrc} alt={alt} width={200} height={250} className="w-full h-auto object-cover rounded-md" />
@@ -14,7 +15,7 @@ export default function Product({ product_name="Unknown", imageSrc = "/ph.jpg", 
             <p className="text-pink-600 font-bold">{seller || "Unknown Seller"}</p>
           </div>
         </div>
-      </button>
+      </Link>
     
   );
 }

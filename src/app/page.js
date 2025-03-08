@@ -29,65 +29,67 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-white pb-16">
       {/* Header with hero image */}
       <div className="relative w-full h-80 md:h-96">
-        <Image 
-          src="/ph.jpg"
-          alt="University Campus"
-          fill
-          priority
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-black/30 flex items-center justify-start p-6">
-          <h1 className="text-white text-5xl md:text-6xl font-bold drop-shadow-lg">
-            Boost up,<br />
-            Chula!
-          </h1>
-        </div>
-      </div>
+  <Image 
+    src="/ph.jpg"
+    alt="University Campus"
+    fill
+    priority
+    className="object-cover"
+  />
+  <div className="absolute inset-0 bg-black/30 flex items-center justify-start p-6">
+    <h1 className="text-white text-5xl md:text-6xl font-bold drop-shadow-lg">
+      Boost up,<br />
+      Chula!
+    </h1>
+  </div>
+</div>
 
       {/* Shopping CTA Button */}
-      <div className="px-4 -mt-6 mb-6 relative z-10 flex justify-center">
-        <Link href={"/shop"} className="w-full py-4 bg-pink-500 hover:bg-pink-600 text-white text-xl font-medium rounded-full shadow-lg transition text-center" >
-          Go Shopping
-        </Link>
-      </div>
+      <div className="relative z-10 flex justify-center -mt-16 mb-0">
+  <Link href={"/shop"} className="w-3/4 py-4 bg-pink-500 hover:bg-pink-600 text-white text-xl font-medium rounded-full shadow-lg transition text-center" >
+    Go Shopping
+  </Link>
+</div>
 
       {/* Featured Promotions Grid */}
-      <div className="grid grid-cols-2 gap-2 px-2 mb-6">
-        {/* Promotion Card 1 */}
-        <div className="relative h-48 rounded-lg overflow-hidden">
-          <Image
-            src="/ph.jpg"
-            alt="Promotion 1"
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-pink-100 to-transparent p-4 flex flex-col justify-end">
-            <div className="bg-pink-200 text-pink-800 px-3 py-1 rounded-lg text-sm w-fit">
-              แก้วกินนี่
-            </div>
-            <div className="absolute top-2 right-2">
-              <div className="bg-teal-400 text-white rounded-full h-12 w-12 flex items-center justify-center">
-                <div className="text-center">
-                  <span className="block text-lg font-bold">3</span>
-                  <span className="text-xs">บาท</span>
+      <div className="relative ">
+        <div className="grid grid-cols-2 mb-6">
+          {/* Promotion Card 1 */}
+          <div className="relative h-48  overflow-hidden">
+            <Image
+              src="/ph.jpg"
+              alt="Promotion 1"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-pink-100 to-transparent p-4 flex flex-col justify-end">
+              <div className="bg-pink-200 text-pink-800 px-3 py-1 text-sm w-fit">
+                แก้วกินนี่
+              </div>
+              <div className="absolute top-2 right-2">
+                <div className="bg-teal-400 text-white rounded-full h-12 w-12 flex items-center justify-center">
+                  <div className="text-center">
+                    <span className="block text-lg font-bold">3</span>
+                    <span className="text-xs">บาท</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Promotion Card 2 */}
-        <div className="relative h-48 rounded-lg overflow-hidden">
-          <Image
-            src="/ph.jpg"
-            alt="Promotion 2"
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent p-4 flex flex-col justify-end">
-            <h3 className="text-white text-xl font-bold">MIDTERM</h3>
-            <h3 className="text-white text-xl font-bold">SALES</h3>
-            <h3 className="text-white text-xl font-bold">IS COMING</h3>
+          {/* Promotion Card 2 */}
+          <div className="relative h-48 overflow-hidden">
+            <Image
+              src="/ph.jpg"
+              alt="Promotion 2"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent p-4 flex flex-col justify-end">
+              <h3 className="text-white text-xl font-bold">MIDTERM</h3>
+              <h3 className="text-white text-xl font-bold">SALES</h3>
+              <h3 className="text-white text-xl font-bold">IS COMING</h3>
+            </div>
           </div>
         </div>
       </div>
@@ -116,6 +118,6 @@ export default function Home() {
 
       {/* Bottom Navigation */}
       <NavItem home={true}/>
-</div>
+    </div>
   );
 }
