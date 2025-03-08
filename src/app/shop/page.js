@@ -4,6 +4,9 @@
 import { useState,useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import NavItem from '../component/Navbar';
+import Product from '../component/card';
+
 
 const categoryList = ['Physics', 'Chemistry', 'Biology', 'Stationery'];
 const items = [
@@ -102,12 +105,13 @@ export default function Main() {
       
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 w-full bg-white border-t py-2">
-        <NavItem></NavItem>
+      <NavItem
+      shop={true}/>
       </nav>
     </div>
   );} else{return(
     
-    <div className="min-h-scree</div>n flex flex-col">
+    <div className="min-h-screen flex flex-col">
         <nav className="p-4 flex justify-between items-center fixed top-0 left-0 w-full bg-white shadow-md z-50 ">
         <Link href="/shop" className="text-2xl" onClick={() => setCategories(null)}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -138,64 +142,17 @@ export default function Main() {
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 px-2 no-scrollbar" >
         {items.map((item, index) => (
-          <div key={index} className="border rounded-lg p-4 shadow-md">
-            <Image src="/ph.jpg" alt={item.title} width={200} height={250} className="w-full h-auto object-cover rounded-md" />
-            <h2 className="text-lg font-semibold mt-2">{item.title}</h2>
-            <p className="text-pink-600 font-bold">{item.price}</p>
-          </div>
+          <Product
+            key={index}
+            product_name={item.title}
+            price={item.price}
+            category={item.category}
+            seller={"Seller"}/>
         ))}
       </div>
-      <NavItem></NavItem>
+      <NavItem
+      shop={true}/>
     </div>)
   }
-}
-
-// Category Card Component
-
-
-// Navigation Item Component
-function NavItem() {
-  
-  return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
-  <div className="container mx-auto flex justify-evenly items-center py-2">
-    <Link href="/" className="flex flex-col items-center text-gray-400">
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-      <span className="text-xs">Home</span>
-    </Link>
-
-    <Link href="/shop" className="flex flex-col items-center text-pink-500">
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-      </svg>
-      <span className="text-xs">Shop</span>
-    </Link>
-
-    <div className="flex flex-col items-center">
-      <button className="h-14 w-14 bg-pink-500 rounded-full flex items-center justify-center -mt-5 text-white shadow-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-        </svg>
-      </button>
-    </div>
-
-    <Link href="/favorites" className="flex flex-col items-center text-gray-400">
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-      </svg>
-      <span className="text-xs">Favorites</span>
-    </Link>
-
-    <Link href="/profile" className="flex flex-col items-center text-gray-400">
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-      </svg>
-      <span className="text-xs">Profile</span>
-    </Link>
-  </div>
-</div>
-  );
 }
 
