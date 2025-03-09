@@ -6,6 +6,10 @@ import { Heart, ShoppingBag, ArrowLeft, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/app/component/header';
+import PhotoSlider from '@/app/component/photoslider';
+
+
+
 export default function ProductPage() {
   const [isFavorited, setIsFavorited] = useState(false);
   
@@ -17,20 +21,9 @@ export default function ProductPage() {
       <Header prevPage="/shop" Title="Product Detail" />
       
       {/* Main content */}
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto mt-16">
         <div className="relative">
-          <Image 
-            src="/ph.jpg" 
-            alt="Drafting Table" 
-            width={600} 
-            height={600}
-            className="w-full object-contain bg-gray-100"
-          />
-          <div className="absolute top-4 left-0">
-            <div className="bg-red-500 text-white py-1 px-3 transform -rotate-45 translate-x-[-30%] font-bold text-sm">
-              QUALITY FIRST
-            </div>
-          </div>
+          <PhotoSlider/>
           <button 
             className="absolute bottom-6 right-6 bg-white rounded-full p-3 shadow-md"
             onClick={() => setIsFavorited(!isFavorited)}

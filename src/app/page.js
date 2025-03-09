@@ -30,7 +30,7 @@ export default function Home() {
       {/* Header with hero image */}
       <div className="relative w-full h-80 md:h-96">
   <Image 
-    src="/ph.jpg"
+    src="/chula.jfif"
     alt="University Campus"
     fill
     priority
@@ -46,7 +46,7 @@ export default function Home() {
 
       {/* Shopping CTA Button */}
       <div className="relative z-10 flex justify-center -mt-16 mb-0">
-  <Link href={"/shop"} className="w-3/4 py-4 bg-pink-500 hover:bg-pink-600 text-white text-xl font-medium rounded-full shadow-lg transition text-center" >
+  <Link href={"/shop"} className="w-3/4 py-4 bg-customPink hover:bg-pink-600 text-white text-xl font-medium rounded-full shadow-lg transition text-center" >
     Go Shopping
   </Link>
 </div>
