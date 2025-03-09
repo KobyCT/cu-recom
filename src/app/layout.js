@@ -1,7 +1,7 @@
 import './globals.css'
 
 export const metadata = {
-  title: 'Chula Campus Shop',
+  title: 'Cu-Recommerce',
   description: 'University shopping platform',
 }
 
