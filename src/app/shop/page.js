@@ -20,29 +20,6 @@ export default function Main() {
     const [categories, setCategories] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-    function CategoryCard({ title, imageSrc, imageAlt, short }) {
-        return (
-          <div className="rounded-lg overflow-hidden bg-white shadow-sm border shadow-md h-32 md:h-40">
-            <button 
-              onClick={() => setCategories(short)} 
-              className="w-full h-full flex"
-            >
-              <div className="flex items-center px-6 flex-1">
-                <h3 className="text-xl font-medium text-gray-800">{title}</h3>
-              </div>
-              <div className="relative w-40 md:w-60">
-                <Image
-                  src={imageSrc}
-                  alt={imageAlt}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  sizes="(max-width: 768px) 160px, 240px"
-                />
-              </div>
-            </button>
-          </div>
-        );
-      }
       return(
     
     <div className="min-h-screen flex flex-col">
@@ -59,19 +36,14 @@ export default function Main() {
             <path d="M21 21l-4.3-4.3" />
           </svg>
         </div>
+        
       </nav>
       
       
-      <div className="flex gap-2 overflow-x-auto pb-2 pt-16">
-        {categoryList.map((category) => (
-          <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            className="bg-pink-500 text-white px-4 py-2 rounded-lg border border-pink-700 hover:bg-pink-600"
-          >
-            {category}
-          </button>
-        ))}
+      <div className="flex gap-2 overflow-x-auto pb-2 pt-16 bg-white shadow-md z-40">
+        <nav className="flex gap-2 px-4">
+          
+        </nav>
       </div>
       
       <div className="grid grid-cols-1  gap-6 mt-6 px-2 no-scrollbar" >
@@ -87,6 +59,7 @@ export default function Main() {
       </div>
       <NavItem
       shop={true}/>
+      <div className="h-16 relative" />
     </div>)
   }
 
