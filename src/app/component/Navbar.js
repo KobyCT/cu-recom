@@ -24,11 +24,11 @@ export default function NavItem({shop =false, favorites = false, profile = false
       </Link>
   
       <div className="flex flex-col items-center">
-        <button className="h-14 w-14 bg-pink-500 rounded-full flex items-center justify-center -mt-5 text-white shadow-lg">
+        <Link href="/addItem" className="h-14 w-14 bg-pink-500 rounded-full flex items-center justify-center -mt-5 text-white shadow-lg">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
-        </button>
+        </Link>
       </div>
   
       <Link href="/chat" className={`flex flex-col items-center ${fM}`}>

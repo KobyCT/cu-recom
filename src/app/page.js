@@ -66,14 +66,6 @@ export default function Home() {
               <div className="bg-pink-200 text-pink-800 px-3 py-1 text-sm w-fit">
                 แก้วกินนี่
               </div>
-              <div className="absolute top-2 right-2">
-                <div className="bg-teal-400 text-white rounded-full h-12 w-12 flex items-center justify-center">
-                  <div className="text-center">
-                    <span className="block text-lg font-bold">3</span>
-                    <span className="text-xs">บาท</span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -111,7 +103,7 @@ export default function Home() {
           <ProductCard pic= "https://upload.wikimedia.org/wikipedia/commons/d/de/Nokota_Horses_cropped.jpg"/>
           <ProductCard />
           <ProductCard />
-          <ProductCard isNew={false} />
+          <ProductCard />
           <ProductCard />
         </div>
       </div>
