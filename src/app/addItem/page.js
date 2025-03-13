@@ -28,7 +28,7 @@ export default function SellProductPage() {
         <Link href="/addItem/wearable" className="block w-full bg-white p-3 mb-3 rounded-lg shadow-md text-gray-800 text-center hover:bg-gray-200 transition">เครื่องแต่งกาย</Link>
         <Link href="/addItem/gadget" className="block w-full bg-white p-3 mb-3 rounded-lg shadow-md text-gray-800 text-center hover:bg-gray-200 transition">อุปกรณ์เครื่องใช้ขนาดเล็ก</Link>
         <Link href="/addItem/big" className="w-full block bg-white p-3 mb-3 rounded-lg shadow-md text-gray-800 text-center hover:bg-gray-200 transition">อุปกรณ์เครื่องใช้ขนาดใหญ่</Link>
-        <Link href="/addItem/book" className="w-full block bg-white p-3 mb-3 rounded-lg shadow-md text-gray-800 text-center hover:bg-gray-200 transition">หนังสือและเอกสารการเรียน</Link>
+        <Link href="/addItem/books" className="w-full block bg-white p-3 mb-3 rounded-lg shadow-md text-gray-800 text-center hover:bg-gray-200 transition">หนังสือและเอกสารการเรียน</Link>
         <Link href="/addItem/draw" className="w-full block bg-white p-3 mb-3 rounded-lg shadow-md text-gray-800 text-center hover:bg-gray-200 transition">เครื่องเขียนและอุปกรณ์ศิลปะ</Link>
         </div>
       </main>
