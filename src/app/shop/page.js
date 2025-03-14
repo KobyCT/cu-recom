@@ -3,11 +3,11 @@
 import { Dialog, Listbox } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import Tag from "../component/tag";
 import Link from "next/link";
 import NavItem from "../component/Navbar";
 import Product from "../component/card";
-
+import { useRouter } from "next/navigation";
 
 const items = [
   { title: "Physics 2nd Edition", price: "150฿", category: "Physics", id: 1 },
@@ -26,7 +26,7 @@ const categories = [
   "อุปกรณ์เครื่องใช้ขนาดเล็ก",
   "อุปกรณ์เครื่องใช้ขนาดใหญ่",
   "หนังสือและเอกสารการเรียน",
-  "เครื่องเขียนและอุปกรณ์ศิลปะ"
+  "เครื่องเขียนและอุปกรณ์ศิลปะ",
 ];
 const facultyData = [
   { name: "Chula Alumni or not from Chula", id: "99" },
@@ -60,29 +60,27 @@ const facultyData = [
   { name: "Sasin Graduate Institute of Business Administration", id: "58" },
 ];
 
-
-
 export default function Main() {
-  const [qurr,setqurr] = useState({
-    faculty:"",
-    category:"",
-    time:"ล่าสุด",
-    price:"low to high"
-  })
+  const [qurr, setqurr] = useState({
+    faculty: "",
+    category: "",
+    time: "ล่าสุด",
+    price: "low to high",
+  });
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isPriceOpen, setIsPriceOpen] = useState(false);
   const [isTimeOpen, setisTimeOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-  const [selectedFaculty, setSelectedFaculty] = useState(qurr.faculty);
-  const time =["ล่าสุด","เก่าสุด"]
-  
-  function toDo(){
-    setIsCategoryOpen(false)
-    console.log(qurr)
+  const router = useRouter();
+
+  const time = ["ล่าสุด", "เก่าสุด"];
+
+  function toDo() {
+    setIsCategoryOpen(false);
+    console.log(qurr);
   }
-  function toDo2(){
-    setisTimeOpen(false)
-    console.log(qurr)
+  function toDo2() {
+    setisTimeOpen(false);
+    console.log(qurr);
   }
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -95,7 +93,7 @@ export default function Main() {
   return (
     <div className="min-h-screen flex flex-col">
       <nav className="p-4 flex justify-between items-center fixed top-0 left-0 w-full bg-white z-50  ">
-        <Link href="/" className="text-2xl">
+        <button onClick={router.back} className="text-2xl">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -109,7 +107,7 @@ export default function Main() {
           >
             <path d="M15 18l-6-6 6-6" />
           </svg>
-        </Link>
+        </button>
         <h1 className="text-2xl font-bold">Shop</h1>
         <div>
           <svg
@@ -135,13 +133,15 @@ export default function Main() {
             หมวดหมู่
           </button>
 
-          <button className="" onClick={() => setisTimeOpen(true)}>{qurr.time}</button>
+          <button className="" onClick={() => setisTimeOpen(true)}>
+            {qurr.time}
+          </button>
 
           <button className="">ราคา : สูงสุด - ต่ำสุด</button>
         </div>
       </nav>
-
-      <div className="grid grid-cols-1 gap-6 mt-20 px-2 no-scrollbar">
+      <div className="h-16" />
+      <div className="grid grid-cols-1 gap-6 mt-16 px-2 no-scrollbar">
         {items.map((item, index) => (
           <Product
             id={item.id}
@@ -150,6 +150,7 @@ export default function Main() {
             price={item.price}
             category={item.category}
             seller={"Seller"}
+            tag={["tag1", "tag2"]}
           />
         ))}
       </div>
@@ -170,35 +171,36 @@ export default function Main() {
 
             {/* Category Dropdown */}
             <select
-                  name="category"
-                  value={qurr.category}
-                  className="w-full border-solid border outline-black rounded-md focus:outline-black p-2 mt-2"
-                  aria-label="Category selection"
-                  onChange={handleChange}
-                >
-                  <option value="">None</option>
-                  {categories.map((cat, i) => (
-                    <option key={i} value={cat}>
-                      {cat}
-                    </option>
-                  ))} </select>
-
+              name="category"
+              value={qurr.category}
+              className="w-full border-solid border outline-black rounded-md focus:outline-black p-2 mt-2"
+              aria-label="Category selection"
+              onChange={handleChange}
+            >
+              <option value="">None</option>
+              {categories.map((cat, i) => (
+                <option key={i} value={cat}>
+                  {cat}
+                </option>
+              ))}{" "}
+            </select>
 
             {/* Faculty Dropdown */}
             <p>คณะ</p>
             <select
-                  name="faculty"
-                  value={qurr.faculty}
-                  className="w-full border-solid border outline-black rounded-md focus:outline-black p-2 mt-2"
-                  aria-label="Faculty selection"
-                  onChange={handleChange}
-                >
-                  <option value="">None</option>
-                  {facultyData.map((faculty, i) => (
-                    <option key={i} value={faculty.id}>
-                      {faculty.name}
-                    </option>
-                  ))} </select>
+              name="faculty"
+              value={qurr.faculty}
+              className="w-full border-solid border outline-black rounded-md focus:outline-black p-2 mt-2"
+              aria-label="Faculty selection"
+              onChange={handleChange}
+            >
+              <option value="">None</option>
+              {facultyData.map((faculty, i) => (
+                <option key={i} value={faculty.id}>
+                  {faculty.name}
+                </option>
+              ))}{" "}
+            </select>
 
             {/* Search Button */}
             <button
@@ -222,20 +224,21 @@ export default function Main() {
               ระยะเวลา
             </Dialog.Title>
 
-            {/* Category Dropdown */}
+            {/* Time Dropdown */}
             <select
-                  name="time"
-                  value={qurr.time}
-                  className="w-full border-solid border outline-black rounded-md focus:outline-black p-2 mt-2"
-                  aria-label="Time selection"
-                  onChange={handleChange}
-                >
-                  <option value="">-</option>
-                  {time.map((t, i) => (
-                    <option key={i} value={t}>
-                      {t}
-                    </option>
-                  ))} </select>
+              name="time"
+              value={qurr.time}
+              className="w-full border-solid border outline-black rounded-md focus:outline-black p-2 mt-2"
+              aria-label="Time selection"
+              onChange={handleChange}
+            >
+              <option value="">-</option>
+              {time.map((t, i) => (
+                <option key={i} value={t}>
+                  {t}
+                </option>
+              ))}{" "}
+            </select>
 
             {/* Search Button */}
             <button

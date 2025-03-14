@@ -1,31 +1,32 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Heart, ShoppingBag, ArrowLeft, Share2 } from 'lucide-react';
-import Header from '@/app/component/header';
-import PhotoSlider from '@/app/component/photoslider';
-import Tag from '@/app/component/tag';
-
+import { useState } from "react";
+import { Heart, ShoppingBag, ArrowLeft, Share2 } from "lucide-react";
+import Header from "@/app/component/header";
+import PhotoSlider from "@/app/component/photoslider";
+import Tag from "@/app/component/tag";
 
 export default function ProductPage() {
   const [isFavorited, setIsFavorited] = useState(false);
-  
+
   return (
     <div className="flex flex-col h-screen bg-white">
-      
-
       {/* Header */}
-      <Header prevPage="/shop" Title="Product Detail" />
-      
+      <Header Title="Product Detail" />
+
       {/* Main content */}
       <div className="flex-1 overflow-auto mt-16">
         <div className="relative">
-          <PhotoSlider/>
-          <button 
+          <PhotoSlider />
+          <button
             className="absolute bottom-6 right-6 bg-white rounded-full p-3 shadow-md"
             onClick={() => setIsFavorited(!isFavorited)}
           >
-            <Heart size={24} fill={isFavorited ? "#f43f5e" : "none"} color={isFavorited ? "#f43f5e" : "#000"} />
+            <Heart
+              size={24}
+              fill={isFavorited ? "#f43f5e" : "none"}
+              color={isFavorited ? "#f43f5e" : "#000"}
+            />
           </button>
         </div>
 
@@ -38,14 +39,15 @@ export default function ProductPage() {
             </div>
             <div className="text-2xl font-bold">3,500฿</div>
           </div>
-          
+
           <div className="flex gap-2 mt-4">
             <Tag tag="Argi" />
             <Tag tag="Vintage" />
           </div>
-          
+
           <p className="mt-4 text-lg">
-            ส่งต่อโต๊ะดราฟมือสอง ไฟยังติดอยู่ ขาตั้งมีรอยคลอก ด้วปรับพื้อเล็กน้อยแต่ยังใช้การได้ดี
+            ส่งต่อโต๊ะดราฟมือสอง ไฟยังติดอยู่ ขาตั้งมีรอยคลอก
+            ด้วปรับพื้อเล็กน้อยแต่ยังใช้การได้ดี
           </p>
         </div>
       </div>
