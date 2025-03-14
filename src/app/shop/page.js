@@ -8,7 +8,7 @@ import Link from "next/link";
 import NavItem from "../component/Navbar";
 import Product from "../component/card";
 
-const categoryList = ["Physics", "Chemistry", "Biology", "Stationery"];
+
 const items = [
   { title: "Physics 2nd Edition", price: "150฿", category: "Physics", id: 1 },
   { title: "Biology Book", price: "170฿", category: "Biology", id: 2 },
@@ -22,19 +22,75 @@ const items = [
 ];
 
 const categories = [
-  "หมวดหมู่",
-  "หนังสือเรียน",
-  "อุปกรณ์การเรียน",
-  "อิเล็กทรอนิกส์",
+  "เครื่องแต่งกาย",
+  "อุปกรณ์เครื่องใช้ขนาดเล็ก",
+  "อุปกรณ์เครื่องใช้ขนาดใหญ่",
+  "หนังสือและเอกสารการเรียน",
+  "เครื่องเขียนและอุปกรณ์ศิลปะ"
 ];
-const faculties = ["คณะ", "วิศวกรรมศาสตร์", "วิทยาศาสตร์", "บริหารธุรกิจ"];
+const facultyData = [
+  { name: "Chula Alumni or not from Chula", id: "99" },
+  { name: "The Sirindhorn Thai Language Institute", id: "01" },
+  { name: "General Education Center", id: "02" },
+  { name: "Graduate School", id: "20" },
+  { name: "Faculty of Engineering", id: "21" },
+  { name: "Faculty of Arts", id: "22" },
+  { name: "Faculty of Science", id: "23" },
+  { name: "Faculty of Political Science", id: "24" },
+  { name: "Faculty of Architecture", id: "25" },
+  { name: "Faculty of Commerce and Accountancy", id: "26" },
+  { name: "Faculty of Education", id: "27" },
+  { name: "Faculty of Communication Arts", id: "28" },
+  { name: "Faculty of Economics", id: "29" },
+  { name: "Faculty of Medicine", id: "30" },
+  { name: "Faculty of Veterinary Science", id: "31" },
+  { name: "Faculty of Dentistry", id: "32" },
+  { name: "Faculty of Pharmaceutical Sciences", id: "33" },
+  { name: "Faculty of Law", id: "34" },
+  { name: "Faculty of Fine and Applied Arts", id: "35" },
+  { name: "Faculty of Nursing", id: "36" },
+  { name: "Faculty of Allied Health Sciences", id: "37" },
+  { name: "Faculty of Psychology", id: "38" },
+  { name: "Faculty of Sports Science", id: "39" },
+  { name: "School of Agricultural Resources", id: "40" },
+  { name: "College of Population Studies", id: "51" },
+  { name: "College of Public Health Sciences", id: "53" },
+  { name: "Language Institute", id: "55" },
+  { name: "School of Integrated Innovation", id: "56" },
+  { name: "Sasin Graduate Institute of Business Administration", id: "58" },
+];
+
+
 
 export default function Main() {
-  const [isPriceOpen, setIsPriceOpen] = useState(false);
+  const [qurr,setqurr] = useState({
+    faculty:"",
+    category:"",
+    time:"ล่าสุด",
+    price:"low to high"
+  })
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isPriceOpen, setIsPriceOpen] = useState(false);
   const [isTimeOpen, setisTimeOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-  const [selectedFaculty, setSelectedFaculty] = useState(faculties[0]);
+  const [selectedFaculty, setSelectedFaculty] = useState(qurr.faculty);
+  const time =["ล่าสุด","เก่าสุด"]
+  
+  function toDo(){
+    setIsCategoryOpen(false)
+    console.log(qurr)
+  }
+  function toDo2(){
+    setisTimeOpen(false)
+    console.log(qurr)
+  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setqurr((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -79,7 +135,7 @@ export default function Main() {
             หมวดหมู่
           </button>
 
-          <button className="">ล่าสุด</button>
+          <button className="" onClick={() => setisTimeOpen(true)}>{qurr.time}</button>
 
           <button className="">ราคา : สูงสุด - ต่ำสุด</button>
         </div>
@@ -113,51 +169,78 @@ export default function Main() {
             </Dialog.Title>
 
             {/* Category Dropdown */}
-            <Listbox value={selectedCategory} onChange={setSelectedCategory}>
-              <div className="relative mb-4">
-                <Listbox.Button className="w-full p-3 border rounded-lg flex justify-between items-center">
-                  {selectedCategory}
-                  <ChevronDownIcon className="w-5 h-5 text-gray-500" />
-                </Listbox.Button>
-                <Listbox.Options className="absolute w-full mt-1 bg-white border rounded-lg shadow-lg">
-                  {categories.map((category) => (
-                    <Listbox.Option
-                      key={category}
-                      value={category}
-                      className="p-3 hover:bg-gray-100 cursor-pointer"
-                    >
-                      {category}
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-              </div>
-            </Listbox>
+            <select
+                  name="category"
+                  value={qurr.category}
+                  className="w-full border-solid border outline-black rounded-md focus:outline-black p-2 mt-2"
+                  aria-label="Category selection"
+                  onChange={handleChange}
+                >
+                  <option value="">None</option>
+                  {categories.map((cat, i) => (
+                    <option key={i} value={cat}>
+                      {cat}
+                    </option>
+                  ))} </select>
+
 
             {/* Faculty Dropdown */}
-            <Listbox value={selectedFaculty} onChange={setSelectedFaculty}>
-              <div className="relative mb-6">
-                <Listbox.Button className="w-full p-3 border rounded-lg flex justify-between items-center">
-                  {selectedFaculty}
-                  <ChevronDownIcon className="w-5 h-5 text-gray-500" />
-                </Listbox.Button>
-                <Listbox.Options className="absolute w-full mt-1 bg-white border rounded-lg shadow-lg">
-                  {faculties.map((faculty) => (
-                    <Listbox.Option
-                      key={faculty}
-                      value={faculty}
-                      className="p-3 hover:bg-gray-100 cursor-pointer"
-                    >
-                      {faculty}
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-              </div>
-            </Listbox>
+            <p>คณะ</p>
+            <select
+                  name="faculty"
+                  value={qurr.faculty}
+                  className="w-full border-solid border outline-black rounded-md focus:outline-black p-2 mt-2"
+                  aria-label="Faculty selection"
+                  onChange={handleChange}
+                >
+                  <option value="">None</option>
+                  {facultyData.map((faculty, i) => (
+                    <option key={i} value={faculty.id}>
+                      {faculty.name}
+                    </option>
+                  ))} </select>
 
             {/* Search Button */}
             <button
-              className="w-full py-3 bg-pink-500 text-white font-semibold rounded-lg"
-              onClick={() => setIsCategoryOpen(false)}
+              className="w-full py-3 bg-pink-500 text-white font-semibold rounded-lg mt-3"
+              onClick={() => toDo()}
+            >
+              ค้นหา
+            </button>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+      <Dialog
+        open={isTimeOpen}
+        onClose={() => setisTimeOpen(false)}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end">
+          <Dialog.Panel className="bg-white w-full p-6 rounded-t-2xl shadow-lg">
+            <div className="w-12 h-1 bg-gray-300 rounded mx-auto mb-4"></div>
+            <Dialog.Title className="text-lg font-semibold mb-2">
+              ระยะเวลา
+            </Dialog.Title>
+
+            {/* Category Dropdown */}
+            <select
+                  name="time"
+                  value={qurr.time}
+                  className="w-full border-solid border outline-black rounded-md focus:outline-black p-2 mt-2"
+                  aria-label="Time selection"
+                  onChange={handleChange}
+                >
+                  <option value="">-</option>
+                  {time.map((t, i) => (
+                    <option key={i} value={t}>
+                      {t}
+                    </option>
+                  ))} </select>
+
+            {/* Search Button */}
+            <button
+              className="w-full py-3 bg-pink-500 text-white font-semibold rounded-lg mt-3"
+              onClick={() => toDo2()}
             >
               ค้นหา
             </button>
