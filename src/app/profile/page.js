@@ -9,12 +9,10 @@ import Link from "next/link";
 const user = {
   name: "Zatin Thachalad",
   phone: "674*******",
-  color: "pink-400",
+  color: "pink-500",
 };
 
 export default function ProfilePage() {
-  const router = useRouter();
-
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Header */}
