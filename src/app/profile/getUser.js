@@ -1,5 +1,6 @@
 // app/allproduct.js
 "use server";
+"no cache";
 
 import { cookies } from "next/headers";
 
