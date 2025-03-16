@@ -72,7 +72,10 @@ function Section({ title, items }) {
               <h3 className="font-medium">{item.title}</h3>
               <p className="text-gray-500 text-sm">{item.seller}</p>
               {item.tag.map((tag, index) => (
-                <div className="bg-pink-500 text-white rounded-full px-2 py-1 w-max mt-2 text-center">
+                <div
+                  key={index}
+                  className="bg-pink-500 text-white rounded-full px-2 py-1 w-max mt-2 text-center"
+                >
                   <p className="text-white text-sm mt-1">{tag}</p>
                 </div>
               ))}

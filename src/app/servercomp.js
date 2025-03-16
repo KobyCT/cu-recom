@@ -10,7 +10,7 @@ function ProductCard({
 }) {
   return (
     <Link
-      href={`product/${id}`}
+      href={`shop/${id}`}
       className="relative min-w-48 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200 group"
     >
       <div className="relative h-40 w-full">
@@ -32,12 +32,15 @@ function ProductCard({
 
 export default async function Show() {
   const cookieStore = await cookies();
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIwMDE3MjM2MjQxOTkwMDAwMDExMCIsImlhdCI6MTc0MjA1NjA3NCwiZXhwIjoxNzQ0NjQ4MDc0fQ.xeOn4KY-NMs_VUKRbJP_IDZ5xxb8gb7vV2pql-SGrJg";
+  const token = cookieStore.get("token").value;
 
   // If there's no token, return an error message
   if (!token) {
-    return <p className="text-red-500">Unauthorized: No token found.</p>;
+    return (
+      <p className="text-red-500">
+        Unauthorized: No token found. Please come back by CUNEX app
+      </p>
+    );
   }
 
   const getProduct = async () => {

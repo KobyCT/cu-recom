@@ -25,7 +25,10 @@ export default function Product({
           <p className="text-gray-500 text-sm">{seller}</p>
           <div className={`flex flex-wrap gap-2 mt-2`}>
             {tag.map((t, index) => (
-              <div className="bg-customPink text-white rounded-full px-3 py-1 flex items-center justify-center">
+              <div
+                key={index}
+                className="bg-customPink text-white rounded-full px-3 py-1 flex items-center justify-center"
+              >
                 <p className="text-white text-sm">{t}</p>
               </div>
             ))}
