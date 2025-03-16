@@ -4,7 +4,7 @@
 import { cookies } from "next/headers";
 import Product from "../component/card";
 
-export default async function Products() {
+export default async function UnappProducts() {
   // Retrieve token from cookies
   const cookieStore = await cookies();
   const token = cookieStore.get("token").value;
