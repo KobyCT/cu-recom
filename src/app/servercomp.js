@@ -32,7 +32,7 @@ function ProductCard({
 
 export default async function Show() {
   const cookieStore = await cookies();
-  const token = cookieStore.get("token").value;
+  const token = cookieStore.get("token").value || "";
 
   // If there's no token, return an error message
   if (!token) {

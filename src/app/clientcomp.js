@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import NavItem from "./component/Navbar";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 // Product component function
 function ProductCard({ isNew = true, pic = "/ph.jpg" }) {
   return (
@@ -25,6 +26,12 @@ export default function Home({ children }) {
   useEffect(() => {
     setClientReady(true);
   }, []);
+  const searchParams = useSearchParams()
+    
+      const search = searchParams.get('search')
+     
+      // This will not be logged on the server when using static rendering
+      console.log(search)
   return (
     <div className="flex flex-col min-h-screen bg-white pb-16">
       {/* Header with hero image */}
