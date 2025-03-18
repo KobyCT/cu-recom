@@ -83,14 +83,14 @@ export default function SellProductClothing() {
   const handleAddVerify = (e) => {
     setProductData((prev) => ({
       ...prev,
-      verifyImages: e.target.files,
+      verifyImages: e.target.files[0],
     }));
   };
 
   const handleAddSell = (e) => {
     setProductData((prev) => ({
       ...prev,
-      productImages: e.target.files,
+      productImages: e.target.files[0],
     }));
   };
 
@@ -125,7 +125,7 @@ export default function SellProductClothing() {
     //     })
     //   );
     // }
-
+    console.log(productData.productImages, productData.verifyImages);
     console.log(bufferArraySell, bufferArrayVerify);
     const { tag, ...toadd } = productData;
     console.log(toadd);
@@ -139,7 +139,7 @@ export default function SellProductClothing() {
     //formData.set("verifyImages", bufferArrayVerify);
     //formData.set("productImages", bufferArraySell);
     formData.set("quantity", 1);
-    await axios.post(
+    const response = await axios.post(
       "https://backend-cu-recom.up.railway.app/api/products",
       formData,
       {
