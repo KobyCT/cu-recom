@@ -1,4 +1,6 @@
 import { getTokenAndSetCookie } from "./actions";
+import { redirect } from "next/navigation";
+import PassToken from "./smallchild";
 
 export default async function ServerComponent({ searchParams }) {
   const { token, lang } = searchParams || {};
@@ -10,23 +12,6 @@ export default async function ServerComponent({ searchParams }) {
   }
   const authtoken = cunextoken.token;
   console.log(authtoken);
-  async function name() {
-    fetch("http://localhost:3000//api/set-cookie?name=theme&value=dark")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }
-  const res = await name();
-
   return (
     <div>
       <h2>Server Component</h2>
@@ -36,6 +21,8 @@ export default async function ServerComponent({ searchParams }) {
         Status:{" "}
         {cunextoken?.error ? `Error: ${cunextoken.error}` : "Token processed"}
       </p>
+      <PassToken name="token" arg={authtoken} />
+      <PassToken name="lang" arg={lang} />
     </div>
   );
 }

@@ -1,5 +1,11 @@
 import ServerComponent from "./getToken";
+import Redirect from "./check";
 
-export default function Main({ searchParams }) {
-  return <ServerComponent searchParams={searchParams} />;
+export default async function Main({ searchParams }) {
+  const para = await searchParams;
+  return (
+    <div>
+      <ServerComponent searchParams={para} />
+    </div>
+  );
 }
