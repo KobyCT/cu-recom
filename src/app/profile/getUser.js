@@ -39,12 +39,16 @@ export default async function UserBanner() {
 
   const data = await user();
   console.log(data);
-
   return (
     <div className="flex items-center mt-10 p-6 border-b border-gray-200 bg-white shadow-sm">
-      <div className={`w-20 h-20 rounded-full bg${data.data.color}`}></div>
+      <div
+        className="w-20 h-20 rounded-full"
+        style={{ backgroundColor: data.data.color }}
+      ></div>
       <div className="ml-4">
-        <h2 className="text-2xl font-bold">{data.data.firstnameth}</h2>
+        <h2 className="text-2xl font-bold">
+          {data.data.firstnameth + " " + data.data.lastnameth}
+        </h2>
         <p className="text-gray-400">{data.data.studentid}</p>
       </div>
     </div>

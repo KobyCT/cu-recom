@@ -8,8 +8,11 @@ export default async function ServerComponent({ searchParams }) {
   const { token, lang } = searchParams || {};
   console.log(token);
   const storedToken = cookieStore.get("token");
-  if (storedToken?.value) {
+  if (storedToken?.value && storedToken?.value != undefined) {
     redirect("/home");
+  }
+  if (token == null) {
+    return <div className="text-xl">Please re enter the site via CUNEX</div>;
   }
   // Only attempt to get token if one was provided
   let cunextoken = null;

@@ -14,35 +14,37 @@ const categories = [
 ];
 
 const facultyData = [
-  { name: "Chula Alumni or not from Chula", id: "99" },
-  { name: "The Sirindhorn Thai Language Institute", id: "01" },
-  { name: "General Education Center", id: "02" },
-  { name: "Graduate School", id: "20" },
-  { name: "Faculty of Engineering", id: "21" },
-  { name: "Faculty of Arts", id: "22" },
-  { name: "Faculty of Science", id: "23" },
-  { name: "Faculty of Political Science", id: "24" },
-  { name: "Faculty of Architecture", id: "25" },
-  { name: "Faculty of Commerce and Accountancy", id: "26" },
-  { name: "Faculty of Education", id: "27" },
-  { name: "Faculty of Communication Arts", id: "28" },
-  { name: "Faculty of Economics", id: "29" },
-  { name: "Faculty of Medicine", id: "30" },
-  { name: "Faculty of Veterinary Science", id: "31" },
-  { name: "Faculty of Dentistry", id: "32" },
-  { name: "Faculty of Pharmaceutical Sciences", id: "33" },
-  { name: "Faculty of Law", id: "34" },
-  { name: "Faculty of Fine and Applied Arts", id: "35" },
-  { name: "Faculty of Nursing", id: "36" },
-  { name: "Faculty of Allied Health Sciences", id: "37" },
-  { name: "Faculty of Psychology", id: "38" },
-  { name: "Faculty of Sports Science", id: "39" },
-  { name: "School of Agricultural Resources", id: "40" },
-  { name: "College of Population Studies", id: "51" },
-  { name: "College of Public Health Sciences", id: "53" },
-  { name: "Language Institute", id: "55" },
-  { name: "School of Integrated Innovation", id: "56" },
-  { name: "Sasin Graduate Institute of Business Administration", id: "58" },
+  { name: "สถาบันภาษาไทยสิรินธร", id: "01" },
+  { name: "ศูนย์การศึกษาทั่วไป", id: "02" },
+  { name: "บัณฑิตวิทยาลัย", id: "20" },
+  { name: "คณะวิศวกรรมศาสตร์", id: "21" },
+  { name: "คณะอักษรศาสตร์", id: "22" },
+  { name: "คณะวิทยาศาสตร์", id: "23" },
+  { name: "คณะรัฐศาสตร์", id: "24" },
+  { name: "คณะสถาปัตยกรรมศาสตร์", id: "25" },
+  { name: "คณะพาณิชยศาสตร์และการบัญชี", id: "26" },
+  { name: "คณะศึกษาศาสตร์", id: "27" },
+  { name: "คณะนิเทศศาสตร์", id: "28" },
+  { name: "คณะเศรษฐศาสตร์", id: "29" },
+  { name: "คณะแพทยศาสตร์", id: "30" },
+  { name: "คณะสัตวแพทยศาสตร์", id: "31" },
+  { name: "คณะทันตแพทยศาสตร์", id: "32" },
+  { name: "คณะเภสัชศาสตร์", id: "33" },
+  { name: "คณะนิติศาสตร์", id: "34" },
+  { name: "คณะศิลปกรรมศาสตร์", id: "35" },
+  { name: "คณะพยาบาลศาสตร์", id: "36" },
+  { name: "คณะสหเวชศาสตร์", id: "37" },
+  { name: "คณะจิตวิทยา", id: "38" },
+  { name: "คณะวิทยาศาสตร์การกีฬา", id: "39" },
+  { name: "โรงเรียนทรัพยากรเกษตร", id: "40" },
+  { name: "วิทยาลัยประชากรศาสตร์", id: "51" },
+  { name: "วิทยาลัยวิทยาศาสตร์สาธารณสุข", id: "53" },
+  { name: "สถาบันภาษา", id: "55" },
+  { name: "สถาบันนวัตกรรมบูรณาการแห่งจุฬาลงกรณ์มหาวิทยาลัย", id: "56" },
+  {
+    name: "สถาบันบัณฑิตบริหารธุรกิจศศินทร์แห่งจุฬาลงกรณ์มหาวิทยาลัย",
+    id: "58",
+  },
 ];
 
 export default function MainLayout({ children }) {
@@ -50,7 +52,7 @@ export default function MainLayout({ children }) {
     faculty: "",
     category: "",
     time: "ล่าสุด",
-    price: "low to high",
+    price: "",
   });
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isPriceOpen, setisPriceOpen] = useState(false);
@@ -81,7 +83,7 @@ export default function MainLayout({ children }) {
   if (qurr.time == "ล่าสุด") {
     timeQ = "DESC";
   } else if (qurr.time == "เก่าสุด") {
-    timeQ = "ASEC";
+    timeQ = "ASC";
   } else {
     timeQ = "";
   }
@@ -325,6 +327,7 @@ export default function MainLayout({ children }) {
               aria-label="Time selection"
               onChange={handleChangeP}
             >
+              <option value="">-</option>
               <option value="low to high">ต่ำสุด - สูงสุด</option>
               <option value="high to low">สูงสุด - ต่ำสุด</option>
             </select>

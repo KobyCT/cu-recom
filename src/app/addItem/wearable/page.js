@@ -2,54 +2,61 @@
 import HeaderSearchLess from "@/app/component/headerns";
 import { useState } from "react";
 import { Field, Label, Select } from "@headlessui/react";
+import axios from "axios";
+import { getCookie } from "cookies-next";
 
 export default function SellProductClothing() {
   const formData = new FormData();
   const [productData, setProductData] = useState({
-    productName: "",
+    verifyImages: "",
+    productImages: "",
+    name: "",
     price: "",
-    originalPrice: "",
+    oldprice: "",
     description: "",
-    standardSize: "",
-    detailedSize: "",
-    brandAndModel: "",
-    careInstructions: "",
-    selectedCondition: "", // Default selected condition
-    shippingMethod: "",
-    purchaseId: "",
+    detailOneDescription: "",
+    detailTwoDescription: "",
+    detailThreeDescription: "",
+    detailFourDescription: "",
+    condition: "", // Default selected condition
+    shippingType: "",
+    shippingCost: "",
+    conditionDescription: "",
     tag: "",
   });
 
   const facultyData = [
-    { name: "Chula Alumni or not from Chula", id: "99" },
-    { name: "The Sirindhorn Thai Language Institute", id: "01" },
-    { name: "General Education Center", id: "02" },
-    { name: "Graduate School", id: "20" },
-    { name: "Faculty of Engineering", id: "21" },
-    { name: "Faculty of Arts", id: "22" },
-    { name: "Faculty of Science", id: "23" },
-    { name: "Faculty of Political Science", id: "24" },
-    { name: "Faculty of Architecture", id: "25" },
-    { name: "Faculty of Commerce and Accountancy", id: "26" },
-    { name: "Faculty of Education", id: "27" },
-    { name: "Faculty of Communication Arts", id: "28" },
-    { name: "Faculty of Economics", id: "29" },
-    { name: "Faculty of Medicine", id: "30" },
-    { name: "Faculty of Veterinary Science", id: "31" },
-    { name: "Faculty of Dentistry", id: "32" },
-    { name: "Faculty of Pharmaceutical Sciences", id: "33" },
-    { name: "Faculty of Law", id: "34" },
-    { name: "Faculty of Fine and Applied Arts", id: "35" },
-    { name: "Faculty of Nursing", id: "36" },
-    { name: "Faculty of Allied Health Sciences", id: "37" },
-    { name: "Faculty of Psychology", id: "38" },
-    { name: "Faculty of Sports Science", id: "39" },
-    { name: "School of Agricultural Resources", id: "40" },
-    { name: "College of Population Studies", id: "51" },
-    { name: "College of Public Health Sciences", id: "53" },
-    { name: "Language Institute", id: "55" },
-    { name: "School of Integrated Innovation", id: "56" },
-    { name: "Sasin Graduate Institute of Business Administration", id: "58" },
+    { name: "สถาบันภาษาไทยสิรินธร", id: "01" },
+    { name: "ศูนย์การศึกษาทั่วไป", id: "02" },
+    { name: "บัณฑิตวิทยาลัย", id: "20" },
+    { name: "คณะวิศวกรรมศาสตร์", id: "21" },
+    { name: "คณะอักษรศาสตร์", id: "22" },
+    { name: "คณะวิทยาศาสตร์", id: "23" },
+    { name: "คณะรัฐศาสตร์", id: "24" },
+    { name: "คณะสถาปัตยกรรมศาสตร์", id: "25" },
+    { name: "คณะพาณิชยศาสตร์และการบัญชี", id: "26" },
+    { name: "คณะศึกษาศาสตร์", id: "27" },
+    { name: "คณะนิเทศศาสตร์", id: "28" },
+    { name: "คณะเศรษฐศาสตร์", id: "29" },
+    { name: "คณะแพทยศาสตร์", id: "30" },
+    { name: "คณะสัตวแพทยศาสตร์", id: "31" },
+    { name: "คณะทันตแพทยศาสตร์", id: "32" },
+    { name: "คณะเภสัชศาสตร์", id: "33" },
+    { name: "คณะนิติศาสตร์", id: "34" },
+    { name: "คณะศิลปกรรมศาสตร์", id: "35" },
+    { name: "คณะพยาบาลศาสตร์", id: "36" },
+    { name: "คณะสหเวชศาสตร์", id: "37" },
+    { name: "คณะจิตวิทยา", id: "38" },
+    { name: "คณะวิทยาศาสตร์การกีฬา", id: "39" },
+    { name: "โรงเรียนทรัพยากรเกษตร", id: "40" },
+    { name: "วิทยาลัยประชากรศาสตร์", id: "51" },
+    { name: "วิทยาลัยวิทยาศาสตร์สาธารณสุข", id: "53" },
+    { name: "สถาบันภาษา", id: "55" },
+    { name: "สถาบันนวัตกรรมบูรณาการแห่งจุฬาลงกรณ์มหาวิทยาลัย", id: "56" },
+    {
+      name: "สถาบันบัณฑิตบริหารธุรกิจศศินทร์แห่งจุฬาลงกรณ์มหาวิทยาลัย",
+      id: "58",
+    },
   ];
 
   // List of condition options
@@ -73,34 +80,105 @@ export default function SellProductClothing() {
     }));
   };
 
-  const selectCondition = (condition) => {
+  const handleAddVerify = (e) => {
     setProductData((prev) => ({
       ...prev,
-      selectedCondition:
-        condition === prev.selectedCondition ? null : condition,
+      verifyImages: e.target.files,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleAddSell = (e) => {
+    setProductData((prev) => ({
+      ...prev,
+      productImages: e.target.files,
+    }));
+  };
+
+  const selectCondition = (condition) => {
+    setProductData((prev) => ({
+      ...prev,
+      condition: condition === prev.condition ? null : condition,
+    }));
+  };
+  function toBuffer(item) {
+    const buffer = Buffer.from(item.arrayBuffer());
+    return buffer;
+  }
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+    let bufferArrayVerify = [];
+    let bufferArraySell = [];
 
-    Object.entries(productData).forEach(([key, value]) => {
+    // if (productData.verifyImages.length) {
+    //   bufferArrayVerify = await Promise.all(
+    //     Array.from(productData.verifyImages).map(async (file) => {
+    //       return Buffer.from(await file.arrayBuffer());
+    //     })
+    //   );
+    // }
+    //
+    // if (productData.productImages.length) {
+    //   bufferArraySell = await Promise.all(
+    //     Array.from(productData.productImages).map(async (file) => {
+    //       return Buffer.from(await file.arrayBuffer());
+    //     })
+    //   );
+    // }
+
+    console.log(bufferArraySell, bufferArrayVerify);
+    const { tag, ...toadd } = productData;
+    console.log(toadd);
+    Object.entries(toadd).forEach(([key, value]) => {
       formData.append(key, value);
     });
 
-    console.log("FormData submitted:", Object.fromEntries(formData));
-    // Implement API call to submit formData here
-  };
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIwMDE3MDY3MDc0OTIwMDAwMDIzMiIsImlhdCI6MTc0MjMxODEwNywiZXhwIjoxNzQ0OTEwMTA3fQ.drJEowBvnuQUxKO1exnVXqKueRuBdrEjsrERQc4TKkY";
 
+    //formData.set("verifyImages", bufferArrayVerify);
+    //formData.set("productImages", bufferArraySell);
+    formData.set("quantity", 1);
+    await axios.post(
+      "https://backend-cu-recom.up.railway.app/api/products",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("FormData submitted:", Object.fromEntries(formData));
+  };
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
       {/* Header */}
       <HeaderSearchLess Title="ขายเครื่องแต่งกาย" prevPage="/addItem" />
       <form onSubmit={handleSubmit} className="space-y-8">
         {/*Upload Section */}
-        <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20">
-          <div className="flex justify-center items-center bg-gray-200 rounded w-full md:w-full lg:w-full h-80 mb-4"></div>
+        <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20 ">
+          <div className="flex justify-center items-center bg-gray-200 rounded w-full md:w-full lg:w-full h-80 mb-4 grid grid-cols-2">
+            <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20 ">
+              <h1>Upload รูปสำหรับโฆษณาขาย</h1>
+              <input
+                type="file"
+                accept=".jpg,.heic,.jpeg"
+                multiple
+                onChange={handleAddSell}
+              />
+            </div>
+            <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20 ">
+              <h1>Upload รูปสำหรับยืนยัน</h1>
+              <input
+                type="file"
+                accept=".jpg,.heic,.jpeg"
+                multiple
+                onChange={handleAddVerify}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Start new */}
@@ -114,8 +192,8 @@ export default function SellProductClothing() {
             <input
               required
               type="text"
-              name="productName"
-              value={productData.productName}
+              name="name"
+              value={productData.name}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -162,8 +240,8 @@ export default function SellProductClothing() {
                 </label>
                 <input
                   type="number"
-                  name="originalPrice"
-                  value={productData.originalPrice}
+                  name="oldprice"
+                  value={productData.oldprice}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -198,8 +276,8 @@ export default function SellProductClothing() {
                 </label>
                 <input
                   type="text"
-                  name="standardSize"
-                  value={productData.standardSize}
+                  name="detailOneDescription"
+                  value={productData.detailOneDescription}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -211,8 +289,8 @@ export default function SellProductClothing() {
                 </label>
                 <input
                   type="text"
-                  name="detailedSize"
-                  value={productData.detailedSize}
+                  name="detailTwoDescription"
+                  value={productData.detailTwoDescription}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -226,8 +304,8 @@ export default function SellProductClothing() {
               <input
                 required
                 type="text"
-                name="brandAndModel"
-                value={productData.brandAndModel}
+                name="detailThreeDescription"
+                value={productData.detailThreeDescription}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -238,8 +316,8 @@ export default function SellProductClothing() {
                 วิธีที่ใช้และข้อมูลเกี่ยวกับการดูแลรักษา
               </label>
               <textarea
-                name="careInstructions"
-                value={productData.careInstructions}
+                name="detailFourDescription"
+                value={productData.detailFourDescription}
                 onChange={handleChange}
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -262,7 +340,7 @@ export default function SellProductClothing() {
                   <input
                     type="checkbox"
                     id={condition}
-                    checked={productData.selectedCondition === condition}
+                    checked={productData.condition === condition}
                     onChange={() => selectCondition(condition)}
                     className="h-5 w-5 text-pink-500 rounded focus:ring-pink-500"
                   />
@@ -283,9 +361,10 @@ export default function SellProductClothing() {
                 รายละเอียดสภาพสินค้า (ถ้ามี ควรกรอกเพิ่มเติม)
               </label>
               <textarea
-                name="conditionDetails"
+                name="conditionDescription"
                 rows={2}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={handleChange}
               />
             </div>
           </section>
@@ -308,8 +387,8 @@ export default function SellProductClothing() {
             <input
               required
               type="text"
-              name="shippingMethod"
-              value={productData.shippingMethod}
+              name="shippingType"
+              value={productData.shippingType}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -323,6 +402,7 @@ export default function SellProductClothing() {
                 type="number"
                 name="shippingCost"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={handleChange}
               />
             </div>
           </section>

@@ -18,9 +18,9 @@ export default async function UnappProducts({ searchpara }) {
   const tags = [faculty, category].join(",");
   let qurr;
   if (time) {
-    qurr = `?tag=${tags}&createtime:${time}&pri&page=1`;
+    qurr = `?tag=${tags}&createtime:${time}&page=1`;
   } else if (price) {
-    qurr = `?tag=${tags}&price:${price}&pri&page=1`;
+    qurr = `?tag=${tags}&price:${price}&page=1`;
   }
   // Fetch product data
   const getProduct = async () => {
@@ -50,7 +50,7 @@ export default async function UnappProducts({ searchpara }) {
   // If no products, show a message
   if (data.length === 0) {
     return (
-      <div className="flex-grow flex items-center justify-center">
+      <div className="flex-grow flex items-center justify-center mt-10">
         <p className="text-gray-500">No products available.</p>
       </div>
     );
