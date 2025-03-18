@@ -83,14 +83,14 @@ export default function SellProductClothing() {
   const handleAddVerify = (e) => {
     setProductData((prev) => ({
       ...prev,
-      verifyImages: e.target.files[0],
+      verifyImages: e.target.files,
     }));
   };
 
   const handleAddSell = (e) => {
     setProductData((prev) => ({
       ...prev,
-      productImages: e.target.files[0],
+      productImages: e.target.files,
     }));
   };
 
@@ -149,6 +149,7 @@ export default function SellProductClothing() {
         },
       }
     );
+    console.log(response);
 
     console.log("FormData submitted:", Object.fromEntries(formData));
   };
