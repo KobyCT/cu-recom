@@ -2,11 +2,11 @@
 import Products from "./allproduct";
 import MainLayout from "./clientcom";
 
-export default async function Shop({ searchPara }) {
-  const para = await searchPara;
+export default async function Shop({ searchParams }) {
+  const para = await searchParams;
   return (
     <MainLayout>
-      <Products />
+      <Products searchpara={para} />
     </MainLayout>
   );
 }

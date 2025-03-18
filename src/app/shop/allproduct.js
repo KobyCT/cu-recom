@@ -4,16 +4,24 @@
 import { cookies } from "next/headers";
 import Product from "../component/card";
 
-export default async function UnappProducts() {
+export default async function UnappProducts({ searchpara }) {
   // Retrieve token from cookies
+  const { faculty, category, time, price } = searchpara;
   const cookieStore = await cookies();
   const token = cookieStore.get("token").value;
-
+  console.log(faculty);
   // If there's no token, return an error message
   if (!token) {
     return <p className="text-red-500">Unauthorized: No token found.</p>;
   }
 
+  const tags = [faculty, category].join(",");
+  let qurr;
+  if (time) {
+    qurr = `?tag=${tags}&createtime:${time}&pri&page=1`;
+  } else if (price) {
+    qurr = `?tag=${tags}&price:${price}&pri&page=1`;
+  }
   // Fetch product data
   const getProduct = async () => {
     try {

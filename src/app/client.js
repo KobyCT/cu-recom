@@ -3,20 +3,17 @@
 
 import { useState, useEffect } from "react";
 import ServerComponent from "./getToken";
-import Redirect from "/check";
+import { redirect } from "next/navigation";
 
-export default async function ServerComponentWrapper({ para }) {
-  const searchpara = await para;
-  const [clientReady, setClientReady] = useState(false);
+export default function ServerComponentWrapper({ para }) {
   useEffect(() => {
-    setClientReady(true);
+    redirect("/home");
   }, []);
   // Function to be called when server component is loaded
 
   return (
     <div>
       <ServerComponent searchParams={para} />
-      {clientReady && <Redirect />}
     </div>
   );
 }

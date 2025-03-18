@@ -62,6 +62,42 @@ export default function MainLayout({ children }) {
   useEffect(() => {
     setClientReady(true);
   }, []);
+  let fac, cat, timeQ, sortPrice;
+
+  if (qurr.category == "หนังสือและเอกสารการเรียน") {
+    cat = "book";
+  } else if (qurr.category == "เครื่องแต่งกาย") {
+    cat = "wearable";
+  } else if (qurr.category == "อุปกรณ์เครื่องใช้ขนาดเล็ก") {
+    cat = "gadget";
+  } else if (qurr.category == "อุปกรณ์เครื่องใช้ขนาดใหญ่") {
+    cat = "big";
+  } else if (qurr.category == "เครื่องเขียนและอุปกรณ์ศิลปะ") {
+    cat = "draw";
+  } else {
+    cat = "";
+  }
+
+  if (qurr.time == "ล่าสุด") {
+    timeQ = "DESC";
+  } else if (qurr.time == "เก่าสุด") {
+    timeQ = "ASEC";
+  } else {
+    timeQ = "";
+  }
+
+  if (qurr.price == "high to low") {
+    sortPrice = "high";
+  } else if (qurr.price == "low to high") {
+    sortPrice = "low";
+  } else {
+    sortPrice = "";
+  }
+
+  const qurrry = `faculty=${qurr.faculty}&category=${cat}&time=${timeQ}&price=${sortPrice}`;
+  useEffect(() => {
+    router.push(`/shop?${qurrry}`);
+  }, [qurr]);
 
   const time = ["ล่าสุด", "เก่าสุด"];
 
@@ -82,6 +118,22 @@ export default function MainLayout({ children }) {
     setqurr((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+  const handleChangeP = (e) => {
+    const { name, value } = e.target;
+    setqurr((prev) => ({
+      ...prev,
+      [name]: value,
+      time: "",
+    }));
+  };
+  const handleChangeT = (e) => {
+    const { name, value } = e.target;
+    setqurr((prev) => ({
+      ...prev,
+      [name]: value,
+      price: "",
     }));
   };
 
@@ -131,11 +183,11 @@ export default function MainLayout({ children }) {
           </button>
 
           <button className="" onClick={() => setisTimeOpen(true)}>
-            {qurr.time}
+            ความเก่า : {qurr.time}
           </button>
 
           <button className="" onClick={() => setisPriceOpen(true)}>
-            ราคา : สูงสุด - ต่ำสุด
+            ราคา : {qurr.price}
           </button>
         </div>
       </nav>
@@ -232,7 +284,7 @@ export default function MainLayout({ children }) {
               value={qurr.time}
               className="w-full border-solid border outline-black rounded-md focus:outline-black p-2 mt-2"
               aria-label="Time selection"
-              onChange={handleChange}
+              onChange={handleChangeT}
             >
               <option value="">-</option>
               {time.map((t, i) => (
@@ -271,9 +323,8 @@ export default function MainLayout({ children }) {
               value={qurr.price}
               className="w-full border-solid border outline-black rounded-md focus:outline-black p-2 mt-2"
               aria-label="Time selection"
-              onChange={handleChange}
+              onChange={handleChangeP}
             >
-              <option value="">-</option>
               <option value="low to high">ต่ำสุด - สูงสุด</option>
               <option value="high to low">สูงสุด - ต่ำสุด</option>
             </select>

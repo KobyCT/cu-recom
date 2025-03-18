@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Field, Label, Select } from "@headlessui/react";
 
 export default function SellProductClothing() {
+  const formData = new FormData();
   const [productData, setProductData] = useState({
     productName: "",
     price: "",
@@ -13,7 +14,7 @@ export default function SellProductClothing() {
     detailedSize: "",
     brandAndModel: "",
     careInstructions: "",
-    selectedCondition: "ใหม่มือสอง/เคยใช้ครั้งเดียว", // Default selected condition
+    selectedCondition: "", // Default selected condition
     shippingMethod: "",
     purchaseId: "",
     tag: "",
@@ -82,28 +83,36 @@ export default function SellProductClothing() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Product data submitted:", productData);
-    // Handle form submission logic here
+    const formData = new FormData();
+
+    Object.entries(productData).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    console.log("FormData submitted:", Object.fromEntries(formData));
+    // Implement API call to submit formData here
   };
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
       {/* Header */}
       <HeaderSearchLess Title="ขายเครื่องแต่งกาย" prevPage="/addItem" />
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {/*Upload Section */}
+        <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20">
+          <div className="flex justify-center items-center bg-gray-200 rounded w-full md:w-full lg:w-full h-80 mb-4"></div>
+        </div>
 
-      {/*Upload Section */}
-      <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20">
-        <div className="flex justify-center items-center bg-gray-200 rounded w-full md:w-full lg:w-full h-80 mb-4"></div>
-      </div>
+        {/* Start new */}
 
-      {/* Start new */}
-
-      <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 mt-4">
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 mt-4">
           {/* Product Name Section */}
           <section>
-            <h2 className="text-lg font-medium mb-3">ชื่อสินค้า</h2>
+            <h2 className="text-lg font-medium mb-3">
+              ชื่อสินค้า<span className="text-red-500">*</span>
+            </h2>
             <input
+              required
               type="text"
               name="productName"
               value={productData.productName}
@@ -134,8 +143,11 @@ export default function SellProductClothing() {
 
             <div className="grid grid-cols-2 gap-4 mt-3">
               <div>
-                <label className="block text-sm font-medium mb-1">ราคา</label>
+                <label className="block text-sm font-medium mb-1">
+                  ราคา<span className="text-red-500">*</span>
+                </label>
                 <input
+                  required
                   type="number"
                   name="price"
                   value={productData.price}
@@ -159,8 +171,11 @@ export default function SellProductClothing() {
             </div>
 
             <div className="mt-3">
-              <label className="block text-sm font-medium mb-1">คำอธิบาย</label>
+              <label className="block text-sm font-medium mb-1">
+                คำอธิบาย<span className="text-red-500">*</span>
+              </label>
               <textarea
+                required
                 name="description"
                 value={productData.description}
                 onChange={handleChange}
@@ -206,9 +221,10 @@ export default function SellProductClothing() {
 
             <div className="mt-3">
               <label className="block text-sm font-medium mb-1">
-                ยี่ห้อและรุ่น
+                ยี่ห้อและรุ่น <span className="text-red-500">*</span>
               </label>
               <input
+                required
                 type="text"
                 name="brandAndModel"
                 value={productData.brandAndModel}
@@ -234,7 +250,7 @@ export default function SellProductClothing() {
           {/* Product Condition Section */}
           <section>
             <h2 className="text-lg font-medium border-b pb-2 mb-4">
-              สภาพสินค้า
+              สภาพสินค้า <span className="text-red-500">*</span>
             </h2>
 
             <div className="space-y-2">
@@ -281,13 +297,16 @@ export default function SellProductClothing() {
             </h2>
 
             <div className="flex items-center mb-2">
-              <span className="block text-sm font-medium">วิธีการจัดส่ง</span>
+              <span className="block text-sm font-medium">
+                วิธีการจัดส่ง <span className="text-red-500">*</span>
+              </span>
               <span className="ml-2 text-xs text-gray-500">
                 (เช่น Kerry, Flash, ไปรษณีย์ ให้ระบุรายละเอียด)
               </span>
             </div>
 
             <input
+              required
               type="text"
               name="shippingMethod"
               value={productData.shippingMethod}
@@ -297,9 +316,10 @@ export default function SellProductClothing() {
 
             <div className="mt-4">
               <label className="block text-sm font-medium mb-1">
-                ค่าจัดส่งในการจัดส่ง
+                ค่าจัดส่งในการจัดส่ง <span className="text-red-500">*</span>
               </label>
               <input
+                required
                 type="number"
                 name="shippingCost"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -316,8 +336,8 @@ export default function SellProductClothing() {
               บันทึกข้อมูลสินค้า
             </button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }
