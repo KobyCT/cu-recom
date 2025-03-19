@@ -12,13 +12,13 @@ export default function Product({
 }) {
   return (
     <Link href={`/shop/${id}`}>
-      <div className="bg-white p-4 rounded-lg shadow flex items-center">
+      <div className="bg-white p-4 rounded-lg shadow flex items-center ">
         <Image
           src={imageSrc}
           alt={alt}
           width={80}
           height={80}
-          className="rounded-lg"
+          className="rounded-lg w-20 h-20 object-cover"
         />
         <div className="ml-4 flex-1">
           <h3 className="font-medium">{product_name}</h3>

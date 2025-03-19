@@ -67,7 +67,7 @@ export default function MainLayout({ children }) {
   let fac, cat, timeQ, sortPrice;
 
   if (qurr.category == "หนังสือและเอกสารการเรียน") {
-    cat = "book";
+    cat = "books";
   } else if (qurr.category == "เครื่องแต่งกาย") {
     cat = "wearable";
   } else if (qurr.category == "อุปกรณ์เครื่องใช้ขนาดเล็ก") {
@@ -89,9 +89,9 @@ export default function MainLayout({ children }) {
   }
 
   if (qurr.price == "high to low") {
-    sortPrice = "high";
+    sortPrice = "DESC";
   } else if (qurr.price == "low to high") {
-    sortPrice = "low";
+    sortPrice = "ASC";
   } else {
     sortPrice = "";
   }

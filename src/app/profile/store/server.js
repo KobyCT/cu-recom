@@ -2,33 +2,16 @@
 "use server";
 
 import { cookies } from "next/headers";
-import Product from "../component/card";
+import Product from "@/app/component/card";
 
-export default async function UnappProducts({ searchpara }) {
+export default async function UnappProducts({ app }) {
   // Retrieve token from cookies
-  const { faculty, category, time, price } = searchpara;
   const cookieStore = await cookies();
   const token = cookieStore.get("token").value;
-  console.log(faculty);
   // If there's no token, return an error message
   if (!token) {
     return <p className="text-red-500">Unauthorized: No token found.</p>;
   }
-
-  const tags = [faculty, category].filter(Boolean).join(","); // filter out any empty strings
-
-  let qurr = "?tag=" + tags;
-
-  if (time) {
-    qurr += `&sort=createtime:${time}`;
-  }
-  if (price) {
-    qurr += `&sort=price:${price}`;
-  }
-
-  qurr += "&page=1"; // Always append page=1
-
-  console.log(qurr);
 
   const facultyData = [
     { name: "สถาบันภาษาไทยสิรินธร", id: "01" },
@@ -91,7 +74,7 @@ export default async function UnappProducts({ searchpara }) {
   const getProduct = async () => {
     try {
       const res = await fetch(
-        `https://backend-cu-recom.up.railway.app/api/products${qurr}`,
+        `https://backend-cu-recom.up.railway.app/api/products${app}`,
         {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },

@@ -1,21 +1,15 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
-export default function PhotoSlider() {
+export default function PhotoSlider({ images = [] }) {
   return (
     <Carousel>
-      <div>
-        <img src="/ph.jpg" />
-        <p className="legend">Legend 1</p>
-      </div>
-      <div>
-        <img src="/ph.jpg" />
-        <p className="legend">Legend 2</p>
-      </div>
-      <div>
-        <img src="/ph.jpg" />
-        <p className="legend">Legend 3</p>
-      </div>
+      {images.map((image, index) => (
+        <div key={index}>
+          <img src={image} alt={`Image ${index}`} />
+          <p className="legend">{index}</p>
+        </div>
+      ))}
     </Carousel>
   );
 }

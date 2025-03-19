@@ -1,13 +1,15 @@
 "use client";
 import HeaderSearchLess from "@/app/component/headerns";
 import { useState } from "react";
-
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { redirect } from "next/navigation";
 export default function SellProductClothing() {
   const formData = new FormData();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [productData, setProductData] = useState({
-    verifyImages: [],  // Array for verify images
-    productImages: [],  // Changed to array for product images
+    verifyImages: [], // Array for verify images
+    productImages: [], // Changed to array for product images
     name: "",
     price: "",
     oldprice: "",
@@ -20,15 +22,16 @@ export default function SellProductClothing() {
     shippingType: "",
     shippingCost: "",
     conditionDescription: "",
+    isOpen: true,
     tag: "",
   });
 
   // Add error state for file validation
   const [fileError, setFileError] = useState({
     verify: "",
-    sell: ""
+    sell: "",
   });
-  
+
   const facultyData = [
     { name: "สถาบันภาษาไทยสิรินธร", id: "01" },
     { name: "ศูนย์การศึกษาทั่วไป", id: "02" },
@@ -73,9 +76,8 @@ export default function SellProductClothing() {
 
   const descriptions = {
     "มีตำหนิ/รอยตามการใช้งาน": "มีรอยขาดหรือด่างจากการใช้งาน",
-    "ส่วนที่ขาดหาย": "ระบุส่วนประกอบที่อาจสูญหาย",
+    ส่วนที่ขาดหาย: "ระบุส่วนประกอบที่อาจสูญหาย",
   };
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -88,18 +90,21 @@ export default function SellProductClothing() {
   // Updated function to handle verify images with limit
   const handleAddVerify = (e) => {
     const files = Array.from(e.target.files);
-    
+
     // Clear previous error message
-    setFileError(prev => ({ ...prev, verify: "" }));
-    
+    setFileError((prev) => ({ ...prev, verify: "" }));
+
     // Check if more than 3 files are selected
     if (files.length > 3) {
-      setFileError(prev => ({ ...prev, verify: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
+      setFileError((prev) => ({
+        ...prev,
+        verify: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น",
+      }));
       // Reset the file input
       e.target.value = "";
       return;
     }
-    
+
     setProductData((prev) => ({
       ...prev,
       verifyImages: files,
@@ -109,18 +114,21 @@ export default function SellProductClothing() {
   // Updated function to handle product images with limit
   const handleAddSell = (e) => {
     const files = Array.from(e.target.files);
-    
+
     // Clear previous error message
-    setFileError(prev => ({ ...prev, sell: "" }));
-    
+    setFileError((prev) => ({ ...prev, sell: "" }));
+
     // Check if more than 3 files are selected
     if (files.length > 3) {
-      setFileError(prev => ({ ...prev, sell: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
+      setFileError((prev) => ({
+        ...prev,
+        sell: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น",
+      }));
       // Reset the file input
       e.target.value = "";
       return;
     }
-    
+
     setProductData((prev) => ({
       ...prev,
       productImages: files,
@@ -133,47 +141,58 @@ export default function SellProductClothing() {
       condition: condition === prev.condition ? null : condition,
     }));
   };
-  
+
   function toBuffer(item) {
     const buffer = Buffer.from(item.arrayBuffer());
     return buffer;
   }
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     const formData = new FormData();
-    
+
     // Check if verify images are within the limit before submitting
     if (productData.verifyImages.length > 3) {
-      setFileError(prev => ({ ...prev, verify: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
+      setFileError((prev) => ({
+        ...prev,
+        verify: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น",
+      }));
       return;
     }
-    
+
     // Check if product images are within the limit before submitting
     if (productData.productImages.length > 3) {
-      setFileError(prev => ({ ...prev, sell: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
+      setFileError((prev) => ({
+        ...prev,
+        sell: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น",
+      }));
       return;
     }
-    
+
     // Check if files are selected
     if (productData.verifyImages.length === 0) {
-      setFileError(prev => ({ ...prev, verify: "กรุณาอัพโหลดรูปสำหรับยืนยัน" }));
+      setFileError((prev) => ({
+        ...prev,
+        verify: "กรุณาอัพโหลดรูปสำหรับยืนยัน",
+      }));
       return;
     }
-    
+
     if (productData.productImages.length === 0) {
-      setFileError(prev => ({ ...prev, sell: "กรุณาอัพโหลดรูปสำหรับโฆษณาขาย" }));
+      setFileError((prev) => ({
+        ...prev,
+        sell: "กรุณาอัพโหลดรูปสำหรับโฆษณาขาย",
+      }));
       return;
     }
-    
+
     const { tag, ...toadd } = productData;
-    
+
     // Append all other form data
     Object.entries(toadd).forEach(([key, value]) => {
       // Special handling for images to ensure we pass the array of files
-      if (key === 'verifyImages' || key === 'productImages') {
+      if (key === "verifyImages" || key === "productImages") {
         for (let i = 0; i < value.length; i++) {
           formData.append(key, value[i]);
         }
@@ -181,11 +200,11 @@ export default function SellProductClothing() {
         formData.append(key, value);
       }
     });
-    
+
     let success;
     const token = getCookie("token");
     formData.set("quantity", 1);
-    
+
     try {
       const response = await axios.post(
         "https://backend-cu-recom.up.railway.app/api/products",
@@ -200,12 +219,12 @@ export default function SellProductClothing() {
       console.log(response);
       const productId = response.data.id;
       console.log("Productid: " + productId);
-      
+
       const addType = await axios.post(
         "https://backend-cu-recom.up.railway.app/api/products/tag/",
         {
-          "productid": productId,
-          "tag": "big"
+          productid: productId,
+          tag: "books",
         },
         {
           headers: {
@@ -214,12 +233,12 @@ export default function SellProductClothing() {
           },
         }
       );
-      
+
       const addFacTag = await axios.post(
         "https://backend-cu-recom.up.railway.app/api/products/tag/",
         {
-          "productid": productId,
-          "tag": productData.tag
+          productid: productId,
+          tag: productData.tag,
         },
         {
           headers: {
@@ -228,48 +247,92 @@ export default function SellProductClothing() {
           },
         }
       );
-      
+
       console.log(addType, addFacTag);
       console.log("FormData submitted:", Object.fromEntries(formData));
       success = true;
     } catch (err) {
       console.log(err);
       console.log("FormData submitted:", Object.fromEntries(formData));
-      //redirect("/addItem/fail")
+      setIsSubmitting(false);
+      redirect("/addItem/fail");
     }
-    
+
     if (success) {
       redirect("/addItem/success");
     }
   };
-  
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
       {/* Header */}
-      <HeaderSearchLess
-        Title="ขายหนังสือเเละเอกสารการเรียน"
-        prevPage="/addItem"
-      />
+      <HeaderSearchLess Title="หนังสือและเอกสารการเรียน" prevPage="/addItem" />
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {/*Upload Section */}
+        <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20 ">
+          <div className="flex justify-center items-center bg-gray-200 rounded w-full md:w-full lg:w-full h-80 mb-4 grid grid-cols-2">
+            <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20 ">
+              <h1>Upload รูปสำหรับโฆษณาขาย</h1>
+              <input
+                id="sell"
+                type="file"
+                accept=".jpg,.heic,.jpeg"
+                multiple
+                onChange={handleAddSell}
+              />
+              <div className="text-xs mt-1 text-gray-500">
+                อัพโหลดได้สูงสุด 3 รูป
+              </div>
+              {fileError.sell && (
+                <div className="text-red-500 text-sm mt-1">
+                  {fileError.sell}
+                </div>
+              )}
+              {productData.productImages.length > 0 && (
+                <div className="text-green-500 text-sm mt-1">
+                  เลือกไฟล์แล้ว {productData.productImages.length} ไฟล์
+                </div>
+              )}
+            </div>
+            <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20 ">
+              <h1>Upload รูปสำหรับยืนยัน</h1>
+              <input
+                id="verify"
+                type="file"
+                accept=".jpg,.heic,.jpeg"
+                multiple
+                onChange={handleAddVerify}
+              />
+              <div className="text-xs mt-1 text-gray-500">
+                อัพโหลดได้สูงสุด 3 รูป
+              </div>
+              {fileError.verify && (
+                <div className="text-red-500 text-sm mt-1">
+                  {fileError.verify}
+                </div>
+              )}
+              {productData.verifyImages.length > 0 && (
+                <div className="text-green-500 text-sm mt-1">
+                  เลือกไฟล์แล้ว {productData.verifyImages.length} ไฟล์
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
 
-      {/*Upload Section */}
-      <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20">
-        <div className="flex justify-center items-center bg-gray-200 rounded w-full md:w-full lg:w-full h-80 mb-4"></div>
-      </div>
-
-      {/* Start new */}
-
-      <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 mt-4">
-        <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Start new */}
+        {/* Rest of the form remains the same */}
+        <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 mt-4">
           {/* Product Name Section */}
           <section>
             <h2 className="text-lg font-medium mb-3">
               ชื่อสินค้า<span className="text-red-500">*</span>
             </h2>
             <input
-              type="text"
               required
-              name="productName"
-              value={productData.productName}
+              type="text"
+              name="name"
+              value={productData.name}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -312,13 +375,12 @@ export default function SellProductClothing() {
 
               <div>
                 <label className="block text-sm font-medium mb-1">
-                  ราคาเดิม<span className="text-red-500">*</span>
+                  ราคาเดิม
                 </label>
                 <input
                   type="number"
-                  required
-                  name="originalPrice"
-                  value={productData.originalPrice}
+                  name="oldprice"
+                  value={productData.oldprice}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -330,8 +392,8 @@ export default function SellProductClothing() {
                 คำอธิบาย<span className="text-red-500">*</span>
               </label>
               <textarea
-                name="description"
                 required
+                name="description"
                 value={productData.description}
                 onChange={handleChange}
                 rows={3}
@@ -353,8 +415,8 @@ export default function SellProductClothing() {
               <input
                 required
                 type="text"
-                name="bookName"
-                value={productData.bookName}
+                name="detailOneDescription"
+                value={productData.detailOneDescription}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -366,12 +428,13 @@ export default function SellProductClothing() {
               </label>
               <input
                 type="text"
-                name="bookDetails"
-                value={productData.bookDetails}
+                name="detailTwoDescription"
+                value={productData.detailTwoDescription}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="mt-3">
                 <label className="block text-sm font-medium mb-1">
@@ -379,8 +442,8 @@ export default function SellProductClothing() {
                 </label>
                 <input
                   type="text"
-                  name="author"
-                  value={productData.author}
+                  name="detailThreeDescription"
+                  value={productData.detailThreeDescription}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -392,8 +455,8 @@ export default function SellProductClothing() {
                 </label>
                 <input
                   type="number"
-                  name="numPages"
-                  value={productData.numPages}
+                  name="detailFourDescription"
+                  value={productData.detailFourDescription}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -416,7 +479,7 @@ export default function SellProductClothing() {
                   <input
                     type="checkbox"
                     id={condition}
-                    checked={productData.selectedCondition === condition}
+                    checked={productData.condition === condition}
                     onChange={() => selectCondition(condition)}
                     className="h-5 w-5 text-pink-500 rounded focus:ring-pink-500"
                   />
@@ -437,9 +500,10 @@ export default function SellProductClothing() {
                 รายละเอียดสภาพสินค้า (ถ้ามี ควรกรอกเพิ่มเติม)
               </label>
               <textarea
-                name="conditionDetails"
+                name="conditionDescription"
                 rows={2}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={handleChange}
               />
             </div>
           </section>
@@ -447,11 +511,13 @@ export default function SellProductClothing() {
           {/* Shipping Section */}
           <section>
             <h2 className="text-lg font-medium border-b pb-2 mb-4">
-              การจัดส่งสินค้า <span className="text-red-500">*</span>
+              การจัดส่งสินค้า
             </h2>
 
             <div className="flex items-center mb-2">
-              <span className="block text-sm font-medium">วิธีการจัดส่ง</span>
+              <span className="block text-sm font-medium">
+                วิธีการจัดส่ง <span className="text-red-500">*</span>
+              </span>
               <span className="ml-2 text-xs text-gray-500">
                 (เช่น Kerry, Flash, ไปรษณีย์ ให้ระบุรายละเอียด)
               </span>
@@ -460,20 +526,22 @@ export default function SellProductClothing() {
             <input
               required
               type="text"
-              name="shippingMethod"
-              value={productData.shippingMethod}
+              name="shippingType"
+              value={productData.shippingType}
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
             <div className="mt-4">
               <label className="block text-sm font-medium mb-1">
-                ค่าจัดส่งในการจัดส่ง
+                ค่าจัดส่งในการจัดส่ง <span className="text-red-500">*</span>
               </label>
               <input
+                required
                 type="number"
                 name="shippingCost"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={handleChange}
               />
             </div>
           </section>
@@ -481,14 +549,20 @@ export default function SellProductClothing() {
           {/* Submit Button */}
           <div className="pt-4 w-full">
             <button
+              id="submit"
               type="submit"
-              className="px-6 py-3 bg-customPink text-white rounded-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full"
+              className={`w-full py-2 px-4 text-white font-semibold rounded-md transition ${
+                isSubmitting
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-customPink hover:bg-pink-600"
+              }`}
+              disabled={isSubmitting}
             >
-              บันทึกข้อมูลสินค้า
+              {isSubmitting ? "กำลังส่งข้อมูล..." : "ลงขายสินค้า"}
             </button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }

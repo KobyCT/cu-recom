@@ -71,7 +71,7 @@ export default async function Show() {
       {data.map((product) => (
         <ProductCard
           key={product.id}
-          pic={"/ph.jpg"}
+          pic={product.productImageUrls[0]}
           altText={product.name}
           id={product.id}
         />

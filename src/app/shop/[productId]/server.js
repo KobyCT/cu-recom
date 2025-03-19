@@ -1,34 +1,13 @@
 // app/allproduct.js
 "use server";
-
+import Photo from "./small";
+import Tag from "@/app/component/tag";
 import { cookies } from "next/headers";
-import Product from "../component/card";
 
-export default async function UnappProducts({ searchpara }) {
+export default async function UnappProducts({ params }) {
   // Retrieve token from cookies
-  const { faculty, category, time, price } = searchpara;
   const cookieStore = await cookies();
   const token = cookieStore.get("token").value;
-  console.log(faculty);
-  // If there's no token, return an error message
-  if (!token) {
-    return <p className="text-red-500">Unauthorized: No token found.</p>;
-  }
-
-  const tags = [faculty, category].filter(Boolean).join(","); // filter out any empty strings
-
-  let qurr = "?tag=" + tags;
-
-  if (time) {
-    qurr += `&sort=createtime:${time}`;
-  }
-  if (price) {
-    qurr += `&sort=price:${price}`;
-  }
-
-  qurr += "&page=1"; // Always append page=1
-
-  console.log(qurr);
 
   const facultyData = [
     { name: "สถาบันภาษาไทยสิรินธร", id: "01" },
@@ -91,7 +70,7 @@ export default async function UnappProducts({ searchpara }) {
   const getProduct = async () => {
     try {
       const res = await fetch(
-        `https://backend-cu-recom.up.railway.app/api/products${qurr}`,
+        `https://backend-cu-recom.up.railway.app/api/products/${params}`,
         {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
@@ -110,29 +89,37 @@ export default async function UnappProducts({ searchpara }) {
     }
   };
 
-  const data = await getProduct();
+  const data = (await getProduct()).data[0];
 
   // If no products, show a message
-  if (data.length === 0) {
-    return (
-      <div className="flex-grow flex items-center justify-center mt-10">
-        <p className="text-gray-500">No products available.</p>
-      </div>
-    );
-  }
+  console.log(data);
   return (
-    <div className="p-4 grid gap-4">
-      {data.map((product) => (
-        <Product
-          key={product.id}
-          id={product.id}
-          product_name={product.name}
-          imageSrc={product.productImageUrls[0] || "/ph.jpg"}
-          seller={product.sellerFirstNameTH + " " + product.sellerLastNameTH}
-          price={product.price}
-          tag={getFacultyCategoryArray(product.tag)}
-        />
-      ))}
+    <div>
+      <div className="flex-1 overflow-auto mt-16 mb-10">
+        <div className="relative"></div>
+
+        {/* Product Details */}
+        <div className="px-4 py-4">
+          <Photo image={data.productImageUrls} />
+          <div className="flex justify-between items-start">
+            <div>
+              <h2 className="text-3xl font-bold">{data.name}</h2>
+              <p className="text-gray-500 mt-1">
+                {data.sellerFirstNameEN + " " + data.sellerLastNameEN}
+              </p>
+            </div>
+            <div className="text-2xl font-bold">{data.price}</div>
+          </div>
+
+          <div className="flex gap-2 mt-4">
+            {getFacultyCategoryArray(data.tag).map((tag, index) => (
+              <Tag key={index} tag={tag} />
+            ))}
+          </div>
+
+          <p className="mt-4 text-lg">รายละเอียด: {data.description}</p>
+        </div>
+      </div>
     </div>
   );
 }
