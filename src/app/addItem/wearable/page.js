@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 
 export default function SellProductClothing() {
   const formData = new FormData();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [productData, setProductData] = useState({
     verifyImages: [],  // Array for verify images
     productImages: [],  // Changed to array for product images
@@ -143,7 +144,7 @@ export default function SellProductClothing() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    
+    setIsSubmitting(true)
     // Check if verify images are within the limit before submitting
     if (productData.verifyImages.length > 3) {
       setFileError(prev => ({ ...prev, verify: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
@@ -521,9 +522,12 @@ export default function SellProductClothing() {
           <div className="pt-4 w-full">
             <button
               type="submit"
-              className="px-6 py-3 bg-customPink text-white rounded-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full"
-            >
-              บันทึกข้อมูลสินค้า
+              className={`w-full py-2 px-4 text-white font-semibold rounded-md transition ${
+                isSubmitting ? "bg-gray-500 cursor-not-allowed" : "bg-customPink hover:bg-pink-600"
+              }`}
+              disabled={isSubmitting}
+           >
+              {isSubmitting ? "กำลังส่งข้อมูล..." : "ลงขายสินค้า"}
             </button>
           </div>
         </div>

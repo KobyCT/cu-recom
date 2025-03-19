@@ -3,51 +3,64 @@ import HeaderSearchLess from "@/app/component/headerns";
 import { useState } from "react";
 
 export default function SellProductClothing() {
+  const formData = new FormData();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [productData, setProductData] = useState({
-    productName: "",
+    verifyImages: [],  // Array for verify images
+    productImages: [],  // Changed to array for product images
+    name: "",
     price: "",
-    originalPrice: "",
+    oldprice: "",
     description: "",
-    bookName: "",
-    bookDetails: "",
-    author: "",
-    numPages: "",
-    selectedCondition: "ใหม่มือสอง/เคยใช้ครั้งเดียว", // Default selected condition
-    shippingMethod: "",
-    purchaseId: "",
+    detailOneDescription: "",
+    detailTwoDescription: "",
+    detailThreeDescription: "",
+    detailFourDescription: "",
+    condition: "",
+    shippingType: "",
+    shippingCost: "",
+    conditionDescription: "",
     tag: "",
   });
 
+  // Add error state for file validation
+  const [fileError, setFileError] = useState({
+    verify: "",
+    sell: ""
+  });
+  
   const facultyData = [
-    { name: "Chula Alumni or not from Chula", id: "99" },
-    { name: "The Sirindhorn Thai Language Institute", id: "01" },
-    { name: "General Education Center", id: "02" },
-    { name: "Graduate School", id: "20" },
-    { name: "Faculty of Engineering", id: "21" },
-    { name: "Faculty of Arts", id: "22" },
-    { name: "Faculty of Science", id: "23" },
-    { name: "Faculty of Political Science", id: "24" },
-    { name: "Faculty of Architecture", id: "25" },
-    { name: "Faculty of Commerce and Accountancy", id: "26" },
-    { name: "Faculty of Education", id: "27" },
-    { name: "Faculty of Communication Arts", id: "28" },
-    { name: "Faculty of Economics", id: "29" },
-    { name: "Faculty of Medicine", id: "30" },
-    { name: "Faculty of Veterinary Science", id: "31" },
-    { name: "Faculty of Dentistry", id: "32" },
-    { name: "Faculty of Pharmaceutical Sciences", id: "33" },
-    { name: "Faculty of Law", id: "34" },
-    { name: "Faculty of Fine and Applied Arts", id: "35" },
-    { name: "Faculty of Nursing", id: "36" },
-    { name: "Faculty of Allied Health Sciences", id: "37" },
-    { name: "Faculty of Psychology", id: "38" },
-    { name: "Faculty of Sports Science", id: "39" },
-    { name: "School of Agricultural Resources", id: "40" },
-    { name: "College of Population Studies", id: "51" },
-    { name: "College of Public Health Sciences", id: "53" },
-    { name: "Language Institute", id: "55" },
-    { name: "School of Integrated Innovation", id: "56" },
-    { name: "Sasin Graduate Institute of Business Administration", id: "58" },
+    { name: "สถาบันภาษาไทยสิรินธร", id: "01" },
+    { name: "ศูนย์การศึกษาทั่วไป", id: "02" },
+    { name: "บัณฑิตวิทยาลัย", id: "20" },
+    { name: "คณะวิศวกรรมศาสตร์", id: "21" },
+    { name: "คณะอักษรศาสตร์", id: "22" },
+    { name: "คณะวิทยาศาสตร์", id: "23" },
+    { name: "คณะรัฐศาสตร์", id: "24" },
+    { name: "คณะสถาปัตยกรรมศาสตร์", id: "25" },
+    { name: "คณะพาณิชยศาสตร์และการบัญชี", id: "26" },
+    { name: "คณะศึกษาศาสตร์", id: "27" },
+    { name: "คณะนิเทศศาสตร์", id: "28" },
+    { name: "คณะเศรษฐศาสตร์", id: "29" },
+    { name: "คณะแพทยศาสตร์", id: "30" },
+    { name: "คณะสัตวแพทยศาสตร์", id: "31" },
+    { name: "คณะทันตแพทยศาสตร์", id: "32" },
+    { name: "คณะเภสัชศาสตร์", id: "33" },
+    { name: "คณะนิติศาสตร์", id: "34" },
+    { name: "คณะศิลปกรรมศาสตร์", id: "35" },
+    { name: "คณะพยาบาลศาสตร์", id: "36" },
+    { name: "คณะสหเวชศาสตร์", id: "37" },
+    { name: "คณะจิตวิทยา", id: "38" },
+    { name: "คณะวิทยาศาสตร์การกีฬา", id: "39" },
+    { name: "โรงเรียนทรัพยากรเกษตร", id: "40" },
+    { name: "วิทยาลัยประชากรศาสตร์", id: "51" },
+    { name: "วิทยาลัยวิทยาศาสตร์สาธารณสุข", id: "53" },
+    { name: "สถาบันภาษา", id: "55" },
+    { name: "สถาบันนวัตกรรมบูรณาการแห่งจุฬาลงกรณ์มหาวิทยาลัย", id: "56" },
+    {
+      name: "สถาบันบัณฑิตบริหารธุรกิจศศินทร์แห่งจุฬาลงกรณ์มหาวิทยาลัย",
+      id: "58",
+    },
   ];
 
   // List of condition options
@@ -60,8 +73,9 @@ export default function SellProductClothing() {
 
   const descriptions = {
     "มีตำหนิ/รอยตามการใช้งาน": "มีรอยขาดหรือด่างจากการใช้งาน",
-    ส่วนที่ขาดหาย: "ระบุส่วนประกอบที่อาจสูญหาย",
+    "ส่วนที่ขาดหาย": "ระบุส่วนประกอบที่อาจสูญหาย",
   };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,20 +85,164 @@ export default function SellProductClothing() {
     }));
   };
 
-  const selectCondition = (condition) => {
+  // Updated function to handle verify images with limit
+  const handleAddVerify = (e) => {
+    const files = Array.from(e.target.files);
+    
+    // Clear previous error message
+    setFileError(prev => ({ ...prev, verify: "" }));
+    
+    // Check if more than 3 files are selected
+    if (files.length > 3) {
+      setFileError(prev => ({ ...prev, verify: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
+      // Reset the file input
+      e.target.value = "";
+      return;
+    }
+    
     setProductData((prev) => ({
       ...prev,
-      selectedCondition:
-        condition === prev.selectedCondition ? null : condition,
+      verifyImages: files,
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Product data submitted:", productData);
-    // Handle form submission logic here
+  // Updated function to handle product images with limit
+  const handleAddSell = (e) => {
+    const files = Array.from(e.target.files);
+    
+    // Clear previous error message
+    setFileError(prev => ({ ...prev, sell: "" }));
+    
+    // Check if more than 3 files are selected
+    if (files.length > 3) {
+      setFileError(prev => ({ ...prev, sell: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
+      // Reset the file input
+      e.target.value = "";
+      return;
+    }
+    
+    setProductData((prev) => ({
+      ...prev,
+      productImages: files,
+    }));
   };
 
+  const selectCondition = (condition) => {
+    setProductData((prev) => ({
+      ...prev,
+      condition: condition === prev.condition ? null : condition,
+    }));
+  };
+  
+  function toBuffer(item) {
+    const buffer = Buffer.from(item.arrayBuffer());
+    return buffer;
+  }
+
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true)
+    const formData = new FormData();
+    
+    // Check if verify images are within the limit before submitting
+    if (productData.verifyImages.length > 3) {
+      setFileError(prev => ({ ...prev, verify: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
+      return;
+    }
+    
+    // Check if product images are within the limit before submitting
+    if (productData.productImages.length > 3) {
+      setFileError(prev => ({ ...prev, sell: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
+      return;
+    }
+    
+    // Check if files are selected
+    if (productData.verifyImages.length === 0) {
+      setFileError(prev => ({ ...prev, verify: "กรุณาอัพโหลดรูปสำหรับยืนยัน" }));
+      return;
+    }
+    
+    if (productData.productImages.length === 0) {
+      setFileError(prev => ({ ...prev, sell: "กรุณาอัพโหลดรูปสำหรับโฆษณาขาย" }));
+      return;
+    }
+    
+    const { tag, ...toadd } = productData;
+    
+    // Append all other form data
+    Object.entries(toadd).forEach(([key, value]) => {
+      // Special handling for images to ensure we pass the array of files
+      if (key === 'verifyImages' || key === 'productImages') {
+        for (let i = 0; i < value.length; i++) {
+          formData.append(key, value[i]);
+        }
+      } else {
+        formData.append(key, value);
+      }
+    });
+    
+    let success;
+    const token = getCookie("token");
+    formData.set("quantity", 1);
+    
+    try {
+      const response = await axios.post(
+        "https://backend-cu-recom.up.railway.app/api/products",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+      const productId = response.data.id;
+      console.log("Productid: " + productId);
+      
+      const addType = await axios.post(
+        "https://backend-cu-recom.up.railway.app/api/products/tag/",
+        {
+          "productid": productId,
+          "tag": "big"
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      
+      const addFacTag = await axios.post(
+        "https://backend-cu-recom.up.railway.app/api/products/tag/",
+        {
+          "productid": productId,
+          "tag": productData.tag
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      
+      console.log(addType, addFacTag);
+      console.log("FormData submitted:", Object.fromEntries(formData));
+      success = true;
+    } catch (err) {
+      console.log(err);
+      console.log("FormData submitted:", Object.fromEntries(formData));
+      //redirect("/addItem/fail")
+    }
+    
+    if (success) {
+      redirect("/addItem/success");
+    }
+  };
+  
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
       {/* Header */}
