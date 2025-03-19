@@ -1,9 +1,9 @@
 "use client";
 import HeaderSearchLess from "@/app/component/headerns";
 import { useState } from "react";
-import { Field, Label, Select } from "@headlessui/react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
+import { redirect } from "next/navigation";
 
 export default function SellProductClothing() {
   const formData = new FormData();
@@ -83,14 +83,14 @@ export default function SellProductClothing() {
   const handleAddVerify = (e) => {
     setProductData((prev) => ({
       ...prev,
-      verifyImages: e.target.files,
+      verifyImages: e.target.files[0],
     }));
   };
 
   const handleAddSell = (e) => {
     setProductData((prev) => ({
       ...prev,
-      productImages: e.target.files,
+      productImages: e.target.files[0],
     }));
   };
 
@@ -132,26 +132,64 @@ export default function SellProductClothing() {
     Object.entries(toadd).forEach(([key, value]) => {
       formData.append(key, value);
     });
-
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIwMDE3MDY3MDc0OTIwMDAwMDIzMiIsImlhdCI6MTc0MjMxODEwNywiZXhwIjoxNzQ0OTEwMTA3fQ.drJEowBvnuQUxKO1exnVXqKueRuBdrEjsrERQc4TKkY";
-
+    let success
+    const token = getCookie("token")
+    console.log(token)
     //formData.set("verifyImages", bufferArrayVerify);
     //formData.set("productImages", bufferArraySell);
     formData.set("quantity", 1);
-    const response = await axios.post(
-      "https://backend-cu-recom.up.railway.app/api/products",
-      formData,
+    try{
+      const response = await axios.post(
+        "https://backend-cu-recom.up.railway.app/api/products",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+    const productId = response.data.id
+    console.log("Productid: "+ productId)
+    const addType = await axios.post(
+      "https://backend-cu-recom.up.railway.app/api/products/tag/",
+      {
+        "productid": productId,
+        "tag": "wearable"
+      },
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    console.log(response);
-
+    const addFacTag = await axios.post(
+      "https://backend-cu-recom.up.railway.app/api/products/tag/",
+      {
+        "productid": productId,
+        "tag": productData.tag
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(addType,addFacTag)
     console.log("FormData submitted:", Object.fromEntries(formData));
+    success = true
+  }catch(err){
+    console.log(err)
+    console.log("FormData submitted:", Object.fromEntries(formData));
+    //redirect("/addItem/fail")
+  }
+  if (success){
+    redirect("/addItem/success")
+  }
+
   };
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
@@ -164,6 +202,7 @@ export default function SellProductClothing() {
             <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20 ">
               <h1>Upload รูปสำหรับโฆษณาขาย</h1>
               <input
+              id="sell"
                 type="file"
                 accept=".jpg,.heic,.jpeg"
                 multiple
@@ -173,6 +212,7 @@ export default function SellProductClothing() {
             <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20 ">
               <h1>Upload รูปสำหรับยืนยัน</h1>
               <input
+              id="verify"
                 type="file"
                 accept=".jpg,.heic,.jpeg"
                 multiple
