@@ -8,8 +8,8 @@ import { redirect } from "next/navigation";
 export default function SellProductClothing() {
   const formData = new FormData();
   const [productData, setProductData] = useState({
-    verifyImages: "",
-    productImages: "",
+    verifyImages: [],  // Array for verify images
+    productImages: [],  // Changed to array for product images
     name: "",
     price: "",
     oldprice: "",
@@ -18,13 +18,19 @@ export default function SellProductClothing() {
     detailTwoDescription: "",
     detailThreeDescription: "",
     detailFourDescription: "",
-    condition: "", // Default selected condition
+    condition: "", 
     shippingType: "",
     shippingCost: "",
     conditionDescription: "",
     tag: "",
   });
 
+  // Add error state for file validation
+  const [fileError, setFileError] = useState({
+    verify: "",
+    sell: ""
+  });
+  
   const facultyData = [
     { name: "สถาบันภาษาไทยสิรินธร", id: "01" },
     { name: "ศูนย์การศึกษาทั่วไป", id: "02" },
@@ -69,7 +75,7 @@ export default function SellProductClothing() {
 
   const descriptions = {
     "มีตำหนิ/รอยตามการใช้งาน": "มีรอยขาดหรือด่างจากการใช้งาน",
-    ส่วนที่ขาดหาย: "ระบุส่วนประกอบที่อาจสูญหาย",
+    "ส่วนที่ขาดหาย": "ระบุส่วนประกอบที่อาจสูญหาย",
   };
 
   const handleChange = (e) => {
@@ -80,17 +86,45 @@ export default function SellProductClothing() {
     }));
   };
 
+  // Updated function to handle verify images with limit
   const handleAddVerify = (e) => {
+    const files = Array.from(e.target.files);
+    
+    // Clear previous error message
+    setFileError(prev => ({ ...prev, verify: "" }));
+    
+    // Check if more than 3 files are selected
+    if (files.length > 3) {
+      setFileError(prev => ({ ...prev, verify: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
+      // Reset the file input
+      e.target.value = "";
+      return;
+    }
+    
     setProductData((prev) => ({
       ...prev,
-      verifyImages: e.target.files[0],
+      verifyImages: files,
     }));
   };
 
+  // Updated function to handle product images with limit
   const handleAddSell = (e) => {
+    const files = Array.from(e.target.files);
+    
+    // Clear previous error message
+    setFileError(prev => ({ ...prev, sell: "" }));
+    
+    // Check if more than 3 files are selected
+    if (files.length > 3) {
+      setFileError(prev => ({ ...prev, sell: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
+      // Reset the file input
+      e.target.value = "";
+      return;
+    }
+    
     setProductData((prev) => ({
       ...prev,
-      productImages: e.target.files[0],
+      productImages: files,
     }));
   };
 
@@ -100,45 +134,58 @@ export default function SellProductClothing() {
       condition: condition === prev.condition ? null : condition,
     }));
   };
+  
   function toBuffer(item) {
     const buffer = Buffer.from(item.arrayBuffer());
     return buffer;
   }
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    let bufferArrayVerify = [];
-    let bufferArraySell = [];
-
-    // if (productData.verifyImages.length) {
-    //   bufferArrayVerify = await Promise.all(
-    //     Array.from(productData.verifyImages).map(async (file) => {
-    //       return Buffer.from(await file.arrayBuffer());
-    //     })
-    //   );
-    // }
-    //
-    // if (productData.productImages.length) {
-    //   bufferArraySell = await Promise.all(
-    //     Array.from(productData.productImages).map(async (file) => {
-    //       return Buffer.from(await file.arrayBuffer());
-    //     })
-    //   );
-    // }
-    console.log(productData.productImages, productData.verifyImages);
-    console.log(bufferArraySell, bufferArrayVerify);
+    
+    // Check if verify images are within the limit before submitting
+    if (productData.verifyImages.length > 3) {
+      setFileError(prev => ({ ...prev, verify: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
+      return;
+    }
+    
+    // Check if product images are within the limit before submitting
+    if (productData.productImages.length > 3) {
+      setFileError(prev => ({ ...prev, sell: "สามารถอัพโหลดได้สูงสุด 3 รูปเท่านั้น" }));
+      return;
+    }
+    
+    // Check if files are selected
+    if (productData.verifyImages.length === 0) {
+      setFileError(prev => ({ ...prev, verify: "กรุณาอัพโหลดรูปสำหรับยืนยัน" }));
+      return;
+    }
+    
+    if (productData.productImages.length === 0) {
+      setFileError(prev => ({ ...prev, sell: "กรุณาอัพโหลดรูปสำหรับโฆษณาขาย" }));
+      return;
+    }
+    
     const { tag, ...toadd } = productData;
-    console.log(toadd);
+    
+    // Append all other form data
     Object.entries(toadd).forEach(([key, value]) => {
-      formData.append(key, value);
+      // Special handling for images to ensure we pass the array of files
+      if (key === 'verifyImages' || key === 'productImages') {
+        for (let i = 0; i < value.length; i++) {
+          formData.append(key, value[i]);
+        }
+      } else {
+        formData.append(key, value);
+      }
     });
-    let success
-    const token = getCookie("token")
-    console.log(token)
-    //formData.set("verifyImages", bufferArrayVerify);
-    //formData.set("productImages", bufferArraySell);
+    
+    let success;
+    const token = getCookie("token");
     formData.set("quantity", 1);
-    try{
+    
+    try {
       const response = await axios.post(
         "https://backend-cu-recom.up.railway.app/api/products",
         formData,
@@ -150,47 +197,51 @@ export default function SellProductClothing() {
         }
       );
       console.log(response);
-    const productId = response.data.id
-    console.log("Productid: "+ productId)
-    const addType = await axios.post(
-      "https://backend-cu-recom.up.railway.app/api/products/tag/",
-      {
-        "productid": productId,
-        "tag": "wearable"
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const productId = response.data.id;
+      console.log("Productid: " + productId);
+      
+      const addType = await axios.post(
+        "https://backend-cu-recom.up.railway.app/api/products/tag/",
+        {
+          "productid": productId,
+          "tag": "wearable"
         },
-      }
-    );
-    const addFacTag = await axios.post(
-      "https://backend-cu-recom.up.railway.app/api/products/tag/",
-      {
-        "productid": productId,
-        "tag": productData.tag
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      
+      const addFacTag = await axios.post(
+        "https://backend-cu-recom.up.railway.app/api/products/tag/",
+        {
+          "productid": productId,
+          "tag": productData.tag
         },
-      }
-    );
-    console.log(addType,addFacTag)
-    console.log("FormData submitted:", Object.fromEntries(formData));
-    success = true
-  }catch(err){
-    console.log(err)
-    console.log("FormData submitted:", Object.fromEntries(formData));
-    //redirect("/addItem/fail")
-  }
-  if (success){
-    redirect("/addItem/success")
-  }
-
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      
+      console.log(addType, addFacTag);
+      console.log("FormData submitted:", Object.fromEntries(formData));
+      success = true;
+    } catch (err) {
+      console.log(err);
+      console.log("FormData submitted:", Object.fromEntries(formData));
+      //redirect("/addItem/fail")
+    }
+    
+    if (success) {
+      redirect("/addItem/success");
+    }
   };
+  
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
       {/* Header */}
@@ -202,28 +253,46 @@ export default function SellProductClothing() {
             <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20 ">
               <h1>Upload รูปสำหรับโฆษณาขาย</h1>
               <input
-              id="sell"
+                id="sell"
                 type="file"
                 accept=".jpg,.heic,.jpeg"
                 multiple
                 onChange={handleAddSell}
               />
+              <div className="text-xs mt-1 text-gray-500">อัพโหลดได้สูงสุด 3 รูป</div>
+              {fileError.sell && (
+                <div className="text-red-500 text-sm mt-1">{fileError.sell}</div>
+              )}
+              {productData.productImages.length > 0 && (
+                <div className="text-green-500 text-sm mt-1">
+                  เลือกไฟล์แล้ว {productData.productImages.length} ไฟล์
+                </div>
+              )}
             </div>
             <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 text-center mt-20 ">
               <h1>Upload รูปสำหรับยืนยัน</h1>
               <input
-              id="verify"
+                id="verify"
                 type="file"
                 accept=".jpg,.heic,.jpeg"
                 multiple
                 onChange={handleAddVerify}
               />
+              <div className="text-xs mt-1 text-gray-500">อัพโหลดได้สูงสุด 3 รูป</div>
+              {fileError.verify && (
+                <div className="text-red-500 text-sm mt-1">{fileError.verify}</div>
+              )}
+              {productData.verifyImages.length > 0 && (
+                <div className="text-green-500 text-sm mt-1">
+                  เลือกไฟล์แล้ว {productData.verifyImages.length} ไฟล์
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Start new */}
-
+        {/* Rest of the form remains the same */}
         <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-lg mb-1 mt-4">
           {/* Product Name Section */}
           <section>
