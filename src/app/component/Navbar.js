@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import { getCookie } from "cookies-next";
 export default function NavItem({
   shop = false,
   favorites = false,
@@ -7,6 +7,7 @@ export default function NavItem({
   home = false,
 }) {
   let sM, fM, pM, hM;
+  const token = getCookie("token");
   if (shop) {
     sM = "text-pink-500";
   } else {
@@ -89,7 +90,7 @@ export default function NavItem({
         </div>
 
         <Link
-          href="https://chatcunex888.onrender.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIwMDE3MDY3MDc0OTIwMDAwMDIzMiIsImlhdCI6MTc0MjQ2NzA5MywiZXhwIjoxNzQ1MDU5MDkzfQ.32J-A7cefJwebPIS0raBD_Y7Ca7X4Sfp3Oe1kHPnCPU"
+          href={`https://chatcunex888.onrender.com/?token=${token}`}
           className={`flex flex-col items-center ${fM}`}
         >
           <svg
