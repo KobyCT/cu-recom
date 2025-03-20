@@ -1,16 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from 'next/link';
+import Link from "next/link";
 import NavItem from "@/app/component/Navbar";
 import HeaderSearchLess from "@/app/component/headerns";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 // Import the server component dynamically to avoid hydration issues
 import UnappProducts from "./server";
 
-export default function StorePage({children,Unapproveitem}) {
-  const [hasError, setHasError] = useState(false);
+export default function StorePage({ children, Unapproveitem }) {
   const [clientReady, setClientReady] = useState(false);
   useEffect(() => {
     setClientReady(true);
@@ -30,7 +29,6 @@ export default function StorePage({children,Unapproveitem}) {
           <p className="text-gray-500 mt-4">กำลังโหลด...</p>
         </div>
       )}
-      
 
       <NavItem profile={true} />
     </div>
@@ -40,35 +38,12 @@ export default function StorePage({children,Unapproveitem}) {
 function Section({ title, type }) {
   return (
     <div className="mb-6">
-      <h2 className="font-semibold text-lg mb-2">สินค้าที่ยืนยันแล้ว</h2>
+      <h2 className="font-semibold text-lg mb-2">{title}</h2>
       <div className="space-y-4">
-          <UnappProducts app={type} />
+        <UnappProducts app={type} />
       </div>
     </div>
   );
 }
 
 // Simple error boundary component
-function ErrorBoundary({ children }) {
-  const [hasError, setHasError] = useState(false);
-
-  useEffect(() => {
-    const handleError = (error) => {
-      console.error("Error caught by error boundary:", error);
-      setHasError(true);
-    };
-
-    window.addEventListener('error', handleError);
-    return () => window.removeEventListener('error', handleError);
-  }, []);
-
-  if (hasError) {
-    return (
-      <div className="flex-grow flex items-center justify-center mt-10">
-        <p className="text-red-500">Error loading products. Please try again later.</p>
-      </div>
-    );
-  }
-
-  return children;
-}

@@ -41,6 +41,8 @@ export default function Home({ children }) {
             Boost up,
             <br />
             Chula!
+            <br />
+            Sustainable Lifestyle
           </h1>
         </div>
       </div>

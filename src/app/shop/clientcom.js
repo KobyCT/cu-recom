@@ -138,7 +138,10 @@ export default function MainLayout({ children }) {
       price: "",
     }));
   };
-
+  const Tran = {
+    "low to high": "ต่ำสุด-สูงสุด",
+    "high to low": "สูงสุด-ต่ำสุด",
+  };
   return (
     <div className="flex flex-col min-h-screen">
       {/* Fixed Top Navigation */}
@@ -189,7 +192,7 @@ export default function MainLayout({ children }) {
           </button>
 
           <button className="" onClick={() => setisPriceOpen(true)}>
-            ราคา : {qurr.price}
+            ราคา : {Tran[qurr.price]}
           </button>
         </div>
       </nav>

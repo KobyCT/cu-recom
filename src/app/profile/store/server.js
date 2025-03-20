@@ -4,16 +4,16 @@
 import { cookies } from "next/headers";
 import Product from "@/app/component/card";
 
-export default async function UnappProducts({ app }) {
+export default async function UnappProducts({ title, app }) {
   // Retrieve token from cookies
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get("token");
-  
+
   // If there's no token, return an error message
   if (!tokenCookie || !tokenCookie.value) {
     return <p className="text-red-500">Unauthorized: No token found.</p>;
   }
-  
+
   const token = tokenCookie.value;
 
   const facultyData = [
@@ -57,7 +57,7 @@ export default async function UnappProducts({ app }) {
     books: "หนังสือและเอกสารการเรียน",
     draw: "เครื่องเขียนและอุปกรณ์ศิลปะ",
   };
-  
+
   function getFacultyCategoryArray(input) {
     if (!Array.isArray(input) || input.length === 0) {
       return []; // Ensure input is a valid array
@@ -78,7 +78,7 @@ export default async function UnappProducts({ app }) {
   const getProduct = async () => {
     try {
       const res = await fetch(
-        `https://backend-cu-recom.up.railway.app/api/products/myproduct?a=true`,
+        `https://backend-cu-recom.up.railway.app/api/products/myproduct?${app}`,
         {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
@@ -108,32 +108,36 @@ export default async function UnappProducts({ app }) {
         </div>
       );
     }
-    
+
     return (
       <div className="mb-6">
-      <h2 className="font-semibold text-lg mb-2 mt-20 ml-10">สินค้าที่ยืนยันแล้ว</h2>
-      <div className="space-y-4">
-  
-      <div className="p-4 grid gap-4">
-        {data.map((product) => (
-          <Product
-            key={product.id}
-            id={product.id}
-            product_name={product.name}
-            imageSrc={product.productImageUrls[0] || "/ph.jpg"}
-            seller={product.sellerFirstNameTH + " " + product.sellerLastNameTH}
-            price={product.price}
-            tag={getFacultyCategoryArray(product.tag)}
-          />
-        ))}
-      </div></div>
+        <h2 className="font-semibold text-lg mb-2 mt-20 ml-10">{title}</h2>
+        <div className="space-y-4">
+          <div className="p-4 grid gap-4">
+            {data.map((product) => (
+              <Product
+                key={product.id}
+                id={product.id}
+                product_name={product.name}
+                imageSrc={product.productImageUrls[0] || "/ph.jpg"}
+                seller={
+                  product.sellerFirstNameTH + " " + product.sellerLastNameTH
+                }
+                price={product.price}
+                tag={getFacultyCategoryArray(product.tag)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     );
   } catch (error) {
     console.error("Error rendering products:", error);
     return (
       <div className="flex-grow flex items-center justify-center mt-10">
-        <p className="text-red-500">Error loading products. Please try again later.</p>
+        <p className="text-red-500">
+          Error loading products. Please try again later.
+        </p>
       </div>
     );
   }
