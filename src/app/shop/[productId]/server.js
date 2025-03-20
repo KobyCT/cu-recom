@@ -175,16 +175,17 @@ export default async function UnappProducts({ params }) {
             ))}
           </div>
 
-          <p className="mt-4 text-lg">รายละเอียด: {data.description}</p>
+          <h1 className="mt-4 text-lg font-bold">รายละเอียด</h1>
+          <p className="mb-5">{data.description}</p>
           <section>
             <h2 className="text-lg font-medium border-b pb-2 mb-4">
               รายละเอียดสินค้า
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
               {Object.entries(detail).map(([label, value], index) => (
                 <div key={index}>
-                  <label className="block text-sm font-medium mb-1">
+                  <label className="block text-sm font-bold mb-1 ">
                     {label}
                   </label>
                   <p>{value}</p>
@@ -194,19 +195,13 @@ export default async function UnappProducts({ params }) {
           </section>
           {/*Product*/}
           <section>
-            <h2 className="text-lg font-medium border-b pb-2 mb-4">
-              สภาพสินค้า
+            <h2 className="text-lg font-bold border-b pb-2 mb-4">
+              สภาพสินค้า - {data.condition}
             </h2>
 
-            <div className="space-y-2">
-              <h1>{data.condition}</h1>
-            </div>
-
             <div className="mt-4">
-              <label className="block text-sm font-medium mb-1">
-                รายละเอียดสภาพสินค้า
-              </label>
-              <p className="mt-2">
+              <h1 className="block  font-bold mb-1 ">รายละเอียดสภาพสินค้า</h1>
+              <p className="mt-2 mb-5">
                 {data.conditiondescription === ""
                   ? "-"
                   : data.conditiondescription}
@@ -214,21 +209,18 @@ export default async function UnappProducts({ params }) {
             </div>
           </section>
           <section>
-            <h2 className="text-lg font-medium border-b pb-2 mb-4">
+            <h2 className="text-lg font-bold border-b pb-2 mb-4">
               การจัดส่งสินค้า
             </h2>
 
             <div className="flex items-center mb-2">
-              <span className="block text-sm font-medium">วิธีการจัดส่ง</span>
-              <span className="ml-2 text-xs text-gray-500">
-                (เช่น Kerry, Flash, ไปรษณีย์ ให้ระบุรายละเอียด)
-              </span>
+              <span className="block font-bold">วิธีการจัดส่ง</span>
             </div>
 
             <p>{data.shippingtype}</p>
 
             <div className="mt-4">
-              <label className="block text-sm font-medium mb-1">
+              <label className="block font-bold mb-1">
                 ค่าจัดส่งในการจัดส่ง
               </label>
               <p>{data.shippingcost}</p>

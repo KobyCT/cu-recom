@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Heart, ShoppingBag, ArrowLeft, Share2 } from "lucide-react";
-import Header from "@/app/component/header";
+import HeaderSearchLess from "@/app/component/headerns";
 import NavItem from "@/app/component/Navbar";
 import { deleteProduct } from "./delete";
 import { getCookie } from "cookies-next";
@@ -17,6 +17,42 @@ const handleDelete = async (productId) => {
     window.location.href = "/shop"; // Redirect after deletion
   } else {
     alert("เกิดข้อผิดพลาดในการลบสินค้า: " + response.error);
+  }
+};
+const handleContact = async (productId) => {
+  if (!confirm("คุณแน่ใจหรือไม่ว่าต้องการติดต่อผู้ขาย และจองสินค้านี้?"))
+    return;
+  const token = getCookie("token");
+  const result = await checkId();
+  if (result) {
+    alert("ไม่สามารถทำรายการได้เนื่องจาก ผู้ติดต่อเป็นผู้ขายเอง");
+    return;
+  } else {
+    try {
+      const res = await fetch(
+        "https://backend-cu-recom.up.railway.app/api/chats/newchat/",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          cache: "no-store",
+          body: JSON.stringify({
+            productId: productId,
+            quantity: "1",
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      window.location.href = `https://chatcunex888.onrender.com/?token=${token}`;
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
+      return;
+    }
   }
 };
 
@@ -46,6 +82,7 @@ const checkId = async (id) => {
 
     const userData = await res.json();
     const sellerData = await sellerRes.json();
+
     return userData.data.uid == sellerData.data[0].sellerid;
   } catch (error) {
     console.error("Failed to fetch user:", error);
@@ -69,7 +106,7 @@ export default function ProductPage({ children, params }) {
   return (
     <div className="flex flex-col h-screen bg-white">
       {/* Header */}
-      <Header Title="สินค้า" />
+      <HeaderSearchLess Title="สินค้า" />
 
       {/* Main content */}
       {clientReady ? (
@@ -91,6 +128,15 @@ export default function ProductPage({ children, params }) {
           ลบสินค้า
         </button>
       )}
+      <div className="mb-10 flex justify-center">
+        <button
+          className="w-3/4 py-4 bg-customPink hover:bg-pink-600 text-white text-xl font-medium rounded-full shadow-lg transition text-center"
+          disabled
+          onClick={() => handleContact(params)}
+        >
+          ติดต่อ และจองสินค้านี้
+        </button>
+      </div>
 
       {/* Footer with action buttons */}
       <div className="sticky bottom-0 bg-white shadow-md p-4">

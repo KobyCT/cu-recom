@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getCookie } from "cookies-next";
+import { useEffect, useState } from "react";
 export default function NavItem({
   shop = false,
   favorites = false,
@@ -7,7 +8,12 @@ export default function NavItem({
   home = false,
 }) {
   let sM, fM, pM, hM;
-  const token = getCookie("token");
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    setToken(getCookie("token")); // Get token only on the client-side
+  }, []);
+  const url = `https://chatcunex888.onrender.com/?token=${token}`;
   if (shop) {
     sM = "text-pink-500";
   } else {
@@ -89,10 +95,7 @@ export default function NavItem({
           </Link>
         </div>
 
-        <Link
-          href={`https://chatcunex888.onrender.com/?token=${token}`}
-          className={`flex flex-col items-center ${fM}`}
-        >
+        <Link href={url} className={`flex flex-col items-center ${fM}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-6"
