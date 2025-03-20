@@ -4,7 +4,7 @@ export default async function Main({ params }) {
   const { productId } = await params;
   return (
     <div>
-      <ProductPage>
+      <ProductPage params={productId}>
         <UnappProducts params={productId} />
       </ProductPage>
     </div>

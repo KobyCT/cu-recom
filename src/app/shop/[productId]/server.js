@@ -93,6 +93,64 @@ export default async function UnappProducts({ params }) {
 
   // If no products, show a message
   console.log(data);
+  const type = data.tag[1];
+  const keysMapping = {
+    gadget: [
+      "ขนาดกว้างxยาวxสูง",
+      "น้ำหนัก",
+      "ยี่ห้อและรุ่น",
+      "วิธีที่ใช้และข้อมูลเกี่ยวกับการดูแลรักษา",
+    ],
+    draw: [
+      "ขนาดกว้างxยาวxสูง",
+      "น้ำหนัก",
+      "ยี่ห้อและรุ่น",
+      "วิธีที่ใช้และข้อมูลเกี่ยวกับการดูแลรักษา",
+    ],
+    big: [
+      "ขนาดกว้างxยาวxสูง",
+      "น้ำหนัก",
+      "ยี่ห้อและรุ่น",
+      "วิธีที่ใช้และข้อมูลเกี่ยวกับการดูแลรักษา",
+    ],
+    wearable: [
+      "ขนาดตามป้าย",
+      "ขนาดแบบละเอียด",
+      "ยี่ห้อและรุ่น",
+      "วิธีที่ใช้และข้อมูลเกี่ยวกับการดูแลรักษา",
+    ],
+    books: [
+      "ชื่อหนังสือ",
+      "ประเภทและเนื้อหาของหนังสือ",
+      "ผู้แต่ง",
+      "จำนวนหน้า",
+    ],
+  };
+  const des = [
+    data.detailonedescription,
+    data.detailtwodescription,
+    data.detailthreedescription,
+    data.detailfourdescription,
+  ];
+  function mapKeysToDescription(data, descriptiondetail) {
+    const tag = data.tag[1]; // Get the first tag
+
+    if (keysMapping[tag]) {
+      return keysMapping[tag].reduce((acc, key, index) => {
+        if (descriptiondetail[index]) {
+          acc[key] = descriptiondetail[index];
+        }
+        return acc;
+      }, {});
+    }
+    return {}; // Return empty object if no matching tag
+  }
+
+  // Example Usage:
+
+  console.log(mapKeysToDescription(data, des));
+  const detail = mapKeysToDescription(data, des);
+
   return (
     <div>
       <div className="flex-1 overflow-auto mt-16 mb-10">
@@ -118,6 +176,64 @@ export default async function UnappProducts({ params }) {
           </div>
 
           <p className="mt-4 text-lg">รายละเอียด: {data.description}</p>
+          <section>
+            <h2 className="text-lg font-medium border-b pb-2 mb-4">
+              รายละเอียดสินค้า
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {Object.entries(detail).map(([label, value], index) => (
+                <div key={index}>
+                  <label className="block text-sm font-medium mb-1">
+                    {label}
+                  </label>
+                  <p>{value}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+          {/*Product*/}
+          <section>
+            <h2 className="text-lg font-medium border-b pb-2 mb-4">
+              สภาพสินค้า
+            </h2>
+
+            <div className="space-y-2">
+              <h1>{data.condition}</h1>
+            </div>
+
+            <div className="mt-4">
+              <label className="block text-sm font-medium mb-1">
+                รายละเอียดสภาพสินค้า
+              </label>
+              <p className="mt-2">
+                {data.conditiondescription === ""
+                  ? "-"
+                  : data.conditiondescription}
+              </p>
+            </div>
+          </section>
+          <section>
+            <h2 className="text-lg font-medium border-b pb-2 mb-4">
+              การจัดส่งสินค้า
+            </h2>
+
+            <div className="flex items-center mb-2">
+              <span className="block text-sm font-medium">วิธีการจัดส่ง</span>
+              <span className="ml-2 text-xs text-gray-500">
+                (เช่น Kerry, Flash, ไปรษณีย์ ให้ระบุรายละเอียด)
+              </span>
+            </div>
+
+            <p>{data.shippingtype}</p>
+
+            <div className="mt-4">
+              <label className="block text-sm font-medium mb-1">
+                ค่าจัดส่งในการจัดส่ง
+              </label>
+              <p>{data.shippingcost}</p>
+            </div>
+          </section>
         </div>
       </div>
     </div>
