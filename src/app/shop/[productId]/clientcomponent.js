@@ -86,7 +86,7 @@ export default function ProductPage({ children, params }) {
       {isSeller && (
         <button
           className="fixed bottom-20 right-5 bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-700 transition"
-          onClick={() => handleDelete(params.id)}
+          onClick={() => handleDelete(params)}
         >
           ลบสินค้า
         </button>
