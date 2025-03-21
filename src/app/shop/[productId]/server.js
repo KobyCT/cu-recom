@@ -175,7 +175,6 @@ export default async function UnappProducts({ params }) {
               )}
             </div>
           </div>
-
           <div className="flex gap-2 mt-4">
             {getFacultyCategoryArray(data.tag).map((tag, index) => (
               <Tag key={index} tag={tag} />
