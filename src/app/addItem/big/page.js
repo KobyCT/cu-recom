@@ -186,6 +186,9 @@ export default function SellProductBig() {
       }));
       return;
     }
+    if (productData.condition === "") {
+      return;
+    }
     setIsSubmitting(true);
     const { tag, ...toadd } = productData;
 

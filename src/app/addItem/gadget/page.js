@@ -187,6 +187,9 @@ export default function SellProductGadget() {
       }));
       return;
     }
+    if (productData.condition === "") {
+      return;
+    }
     setIsSubmitting(true);
     const { tag, ...toadd } = productData;
 

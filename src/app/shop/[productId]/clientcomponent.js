@@ -23,36 +23,41 @@ const handleContact = async (productId) => {
   if (!confirm("คุณแน่ใจหรือไม่ว่าต้องการติดต่อผู้ขาย และจองสินค้านี้?"))
     return;
   const token = getCookie("token");
-  const result = await checkId();
+  const result = await checkId(productId);
+  const amoutOfChat = await checkBuyer();
   if (result) {
     alert("ไม่สามารถทำรายการได้เนื่องจาก ผู้ติดต่อเป็นผู้ขายเอง");
     return;
-  } else {
-    try {
-      const res = await fetch(
-        "https://backend-cu-recom.up.railway.app/api/chats/newchat/",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          cache: "no-store",
-          body: JSON.stringify({
-            productId: productId,
-            quantity: "1",
-          }),
-        }
-      );
+  }
+  if (amoutOfChat > 2) {
+    alert("ไม่สามารถทำรายการได้เนื่องจาก ติดต่อซื้อเกิน 3 order แล้ว");
+    return;
+  }
 
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
+  try {
+    const res = await fetch(
+      "https://backend-cu-recom.up.railway.app/api/chats/newchat/",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+        body: JSON.stringify({
+          productId: productId,
+          quantity: "1",
+        }),
       }
-      window.location.href = `https://chatcunex888.onrender.com/?token=${token}`;
-    } catch (error) {
-      console.error("Failed to fetch user:", error);
-      return;
+    );
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
     }
+    window.location.href = `https://chatcunex888.onrender.com/?token=${token}`;
+  } catch (error) {
+    console.error("Failed to fetch user:", error);
+    return;
   }
 };
 
@@ -87,6 +92,75 @@ const checkId = async (id) => {
   } catch (error) {
     console.error("Failed to fetch user:", error);
     return false;
+  }
+};
+
+const checkBuyer = async () => {
+  const token = getCookie("token");
+  try {
+    // Fetch user data
+    const userRes = await fetch(
+      "https://backend-cu-recom.up.railway.app/api/auth/me",
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store",
+      }
+    );
+
+    if (!userRes.ok) {
+      throw new Error(`HTTP error! Status: ${userRes.status}`);
+    }
+
+    const userData = await userRes.json();
+    console.log(userData);
+    const userId = userData.data.uid;
+
+    // Fetch chat data
+    const chatRes = await fetch(
+      `https://backend-cu-recom.up.railway.app/api/chats/${userId}`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store",
+      }
+    );
+
+    if (!chatRes.ok) {
+      throw new Error(`HTTP error! Status: ${chatRes.status}`);
+    }
+
+    const chatData = await chatRes.json();
+    console.log("chatid: " + chatData);
+    // Fetch product data
+    const productRes = await fetch(
+      `https://backend-cu-recom.up.railway.app/api/products/myproduct`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store",
+      }
+    );
+
+    if (!productRes.ok) {
+      throw new Error(`HTTP error! Status: ${productRes.status}`);
+    }
+
+    const productData = await productRes.json();
+
+    // Extract all product IDs from my products
+    const myProductIds = productData.map((product) => product.id);
+
+    // Filter chats to get only those where productid is not in myProductIds
+    const filteredChats = chatData.filter(
+      (chat) => !myProductIds.includes(chat.productid)
+    );
+    console.log(filteredChats.length);
+    // Return the length as a number (not as a function call)
+    return filteredChats.length;
+  } catch (error) {
+    console.error("Failed to fetch data:", error);
+    return 0; // Return 0 instead of false for consistency (length should be a number)
   }
 };
 
@@ -131,7 +205,6 @@ export default function ProductPage({ children, params }) {
       <div className="mb-10 flex justify-center">
         <button
           className="w-3/4 py-4 bg-customPink hover:bg-pink-600 text-white text-xl font-medium rounded-full shadow-lg transition text-center"
-          disabled
           onClick={() => handleContact(params)}
         >
           ติดต่อ และจองสินค้านี้

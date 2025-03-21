@@ -185,6 +185,9 @@ export default function SellProductClothing() {
       }));
       return;
     }
+    if (productData.condition === "") {
+      return;
+    }
     setIsSubmitting(true);
     const { tag, ...toadd } = productData;
 
@@ -441,10 +444,9 @@ export default function SellProductClothing() {
 
             <div className="mt-3">
               <label className="block text-sm font-medium mb-1">
-                ยี่ห้อและรุ่น <span className="text-red-500">*</span>
+                ยี่ห้อและรุ่น
               </label>
               <input
-                required
                 type="text"
                 name="detailThreeDescription"
                 value={productData.detailThreeDescription}

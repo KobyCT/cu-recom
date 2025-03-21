@@ -185,7 +185,9 @@ export default function SellProductClothing() {
       }));
       return;
     }
-
+    if (productData.condition === "") {
+      return;
+    }
     const { tag, ...toadd } = productData;
     setIsSubmitting(true);
     // Append all other form data

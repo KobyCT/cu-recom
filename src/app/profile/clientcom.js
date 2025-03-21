@@ -58,15 +58,6 @@ export default function ProfilePage({ children }) {
         </Link>
       </div>
 
-      {/* Order Status */}
-      <Link
-        href=""
-        className="p-4 border-b border-gray-100 bg-white shadow-sm mt-2 hover:bg-gray-50"
-      >
-        <h3 className="text-lg font-bold mb-1">การสั่งซื้อของฉัน</h3>
-        <p className="text-gray-400">อยู่ระหว่างการดำเนินการ 3 ออเดอร์</p>
-      </Link>
-
       {/* Empty Space */}
       <div className="flex-grow"></div>
 
