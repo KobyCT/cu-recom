@@ -63,29 +63,23 @@ export default function Home({ children }) {
           {/* Promotion Card 1 */}
           <div className="relative h-48  overflow-hidden">
             <Image
-              src="/ph.jpg"
+              src="/CU_NEX.png"
               alt="Promotion 1"
               fill
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-pink-100 to-transparent p-4 flex flex-col justify-end">
-              <div className="bg-pink-200 text-pink-800 px-3 py-1 text-sm w-fit">
-                แก้วกินนี่
-              </div>
-            </div>
           </div>
 
           {/* Promotion Card 2 */}
           <div className="relative h-48 overflow-hidden">
             <Image
-              src="/ph.jpg"
+              src="/home2.jpg"
               alt="Promotion 2"
               fill
               className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent p-4 flex flex-col justify-end">
-              <h3 className="text-white text-xl font-bold">MIDTERM</h3>
-              <h3 className="text-white text-xl font-bold">SALES</h3>
+              <h3 className="text-white text-xl font-bold">FINAL</h3>
               <h3 className="text-white text-xl font-bold">IS COMING</h3>
             </div>
           </div>
@@ -99,7 +93,7 @@ export default function Home({ children }) {
             <h2 className="text-3xl font-bold text-gray-900">New Arrival</h2>
             <p className="text-gray-500">You've never seen it before!</p>
           </div>
-          <Link href="/all" className="text-gray-700">
+          <Link href="/shop" className="text-gray-700">
             View all
           </Link>
         </div>

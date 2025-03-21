@@ -122,17 +122,19 @@ export default async function UnappProducts({ searchpara }) {
   }
   return (
     <div className="p-4 grid gap-4">
-      {data.map((product) => (
-        <Product
-          key={product.id}
-          id={product.id}
-          product_name={product.name}
-          imageSrc={product.productImageUrls[0] || "/ph.jpg"}
-          seller={product.sellerFirstNameTH + " " + product.sellerLastNameTH}
-          price={product.price}
-          tag={getFacultyCategoryArray(product.tag)}
-        />
-      ))}
+      {data
+        .filter((product) => product.isopen !== false) // Exclude products where isopen is false
+        .map((product) => (
+          <Product
+            key={product.id}
+            id={product.id}
+            product_name={product.name}
+            imageSrc={product.productImageUrls[0] || "/ph.jpg"}
+            seller={product.sellerFirstNameTH + " " + product.sellerLastNameTH}
+            price={product.price}
+            tag={getFacultyCategoryArray(product.tag)}
+          />
+        ))}
     </div>
   );
 }

@@ -13,7 +13,7 @@ export default function SellProductClothing() {
     productImages: [], // Changed to array for product images
     name: "",
     price: "",
-    oldprice: "",
+    oldPrice: "",
     description: "",
     detailOneDescription: "",
     detailTwoDescription: "",
@@ -151,7 +151,6 @@ export default function SellProductClothing() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    setIsSubmitting(true);
     // Check if verify images are within the limit before submitting
     if (productData.verifyImages.length > 3) {
       setFileError((prev) => ({
@@ -186,7 +185,7 @@ export default function SellProductClothing() {
       }));
       return;
     }
-
+    setIsSubmitting(true);
     const { tag, ...toadd } = productData;
 
     // Append all other form data
@@ -383,8 +382,8 @@ export default function SellProductClothing() {
                 </label>
                 <input
                   type="number"
-                  name="oldprice"
-                  value={productData.oldprice}
+                  name="oldPrice"
+                  value={productData.oldPrice}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />

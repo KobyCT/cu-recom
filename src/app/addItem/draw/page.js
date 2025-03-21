@@ -13,7 +13,7 @@ export default function SellProductGadget() {
     productImages: [], // Changed to array for product images
     name: "",
     price: "",
-    oldprice: "",
+    oldPrice: "",
     description: "",
     detailOneDescription: "",
     detailTwoDescription: "",
@@ -150,7 +150,6 @@ export default function SellProductGadget() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
     const formData = new FormData();
 
     // Check if verify images are within the limit before submitting
@@ -187,7 +186,7 @@ export default function SellProductGadget() {
       }));
       return;
     }
-
+    setIsSubmitting(true);
     const { tag, ...toadd } = productData;
 
     // Append all other form data
@@ -383,8 +382,8 @@ export default function SellProductGadget() {
                 </label>
                 <input
                   type="number"
-                  name="oldprice"
-                  value={productData.oldprice}
+                  name="oldPrice"
+                  value={productData.oldPrice}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />

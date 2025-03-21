@@ -46,7 +46,7 @@ export default async function Show() {
   const getProduct = async () => {
     try {
       const res = await fetch(
-        "https://backend-cu-recom.up.railway.app/api/products?sort=createtime:DESC",
+        "https://backend-cu-recom.up.railway.app/api/products?sort=createtime:DESC&page=1",
         {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
@@ -68,14 +68,16 @@ export default async function Show() {
   console.log(data);
   return (
     <div className="flex overflow-x-auto gap-4 pb-4 no-scrollbar">
-      {data.map((product) => (
-        <ProductCard
-          key={product.id}
-          pic={product.productImageUrls[0]}
-          altText={product.name}
-          id={product.id}
-        />
-      ))}
+      {data
+        .filter((product) => product.isopen !== false)
+        .map((product) => (
+          <ProductCard
+            key={product.id}
+            pic={product.productImageUrls[0]}
+            altText={product.name}
+            id={product.id}
+          />
+        ))}
     </div>
   );
 }
