@@ -54,6 +54,20 @@ const handleContact = async (productId) => {
     if (!res.ok) {
       throw new Error(`HTTP error! Status: ${res.status}`);
     }
+    const close = await fetch(
+      `https://backend-cu-recom.up.railway.app/api/products/close/${productId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+      }
+    );
+    if (!close.ok) {
+      throw new Error(`HTTP error! Status: ${close.status}`);
+    }
     window.location.href = `https://chatcunex888.onrender.com/?token=${token}`;
   } catch (error) {
     console.error("Failed to fetch user:", error);
