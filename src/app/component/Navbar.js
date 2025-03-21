@@ -37,7 +37,7 @@ export default function NavItem({
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
       <div className="container mx-auto flex justify-evenly items-center py-2">
-        <Link href="/" className={`flex flex-col items-center ${hM}`}>
+        <Link href="/home" className={`flex flex-col items-center ${hM}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
@@ -95,7 +95,10 @@ export default function NavItem({
           </Link>
         </div>
 
-        <Link href={url} className={`flex flex-col items-center ${fM}`}>
+        <Link
+          href={token ? `${url}` : "#"}
+          className={`flex flex-col items-center ${fM}`}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-6"
