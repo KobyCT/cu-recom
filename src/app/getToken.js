@@ -8,7 +8,7 @@ export default async function ServerComponent({ searchParams }) {
   const { token, lang } = searchParams || {};
   console.log(token);
   const storedToken = cookieStore.get("token");
-  if (storedToken?.value && (storedToken?.value != undefined)) {
+  if (storedToken?.value && storedToken?.value != undefined) {
     redirect("/home");
   }
   if (token == null) {
@@ -19,6 +19,7 @@ export default async function ServerComponent({ searchParams }) {
   if (token) {
     cunextoken = await getTokenAndSetCookie(token);
   }
+
   const authtoken = cunextoken.token;
   console.log(authtoken);
   return (
