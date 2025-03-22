@@ -25,8 +25,12 @@ const handleContact = async (productId) => {
   const token = getCookie("token");
   const result = await checkId(productId);
   const amoutOfChat = await checkBuyer();
-  if (result) {
+  if (result.seller) {
     alert("ไม่สามารถทำรายการได้เนื่องจาก ผู้ติดต่อเป็นผู้ขายเอง");
+    return;
+  }
+  if (!result.isAOpen) {
+    alert("ไม่สามารถทำรายการได้เนื่องจาก สินค้านี้มีคนจองแล้ว");
     return;
   }
   if (amoutOfChat > 2) {
@@ -101,8 +105,9 @@ const checkId = async (id) => {
 
     const userData = await res.json();
     const sellerData = await sellerRes.json();
-
-    return userData.data.uid == sellerData.data[0].sellerid;
+    const isASeller = userData.data.uid == sellerData.data[0].sellerid;
+    const isAOpen = sellerData.data[0].isopen;
+    return { seller: isASeller, openOrNot: isAOpen };
   } catch (error) {
     console.error("Failed to fetch user:", error);
     return false;

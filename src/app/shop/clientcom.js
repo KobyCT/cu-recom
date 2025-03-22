@@ -4,6 +4,7 @@ import { Dialog } from "@headlessui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import NavItem from "../component/Navbar";
+import Link from "next/link";
 
 const categories = [
   "เครื่องแต่งกาย",
@@ -163,20 +164,22 @@ export default function MainLayout({ children }) {
         </button>
         <h1 className="text-2xl font-bold">Shop</h1>
         <div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.3-4.3" />
-          </svg>
+          <Link href="/shop/search?q=">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.3-4.3" />
+            </svg>
+          </Link>
         </div>
       </nav>
 

@@ -79,7 +79,7 @@ export default async function UserBanner() {
       </div>
 
       <div className="p-4 border-b border-gray-100 bg-white shadow-sm mt-2 hover:bg-gray-50 mt-5">
-        <h3 className="text-lg font-bold mb-1">การสั่งซื้อของฉัน</h3>
+        <h3 className="text-lg font-bold mb-1">การซื้อ-ขายของฉัน</h3>
         <p className="text-gray-400">
           อยู่ระหว่างการดำเนินการ {chatofuser.length} รายการ
         </p>
