@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 export default async function ServerComponent({ searchParams }) {
   const cookieStore = await cookies();
   const { token, lang } = searchParams || {};
-  console.log(token);
+  console.log("CUNEX TOKEN:" + token);
   const storedToken = cookieStore.get("token");
   if (storedToken?.value && storedToken?.value != undefined) {
     redirect("/home");
