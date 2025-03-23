@@ -72,6 +72,26 @@ const handleContact = async (productId) => {
     if (!close.ok) {
       throw new Error(`HTTP error! Status: ${close.status}`);
     }
+
+    const noti = await fetch(
+      `https://backend-cu-recom.up.railway.app/api/noti/send`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: result["idofSeller"], // Assuming productData contains the seller's ID
+          text_TH: `สินค้า ${result["productName"]} ของคุณได้ถูกยกเลิกการอนุมัติแล้ว`,
+          text_EN: `Your product "${result["productName"]}" has been unapproved`,
+        }),
+      }
+    );
+    if (!noti.ok) {
+      throw new Error(`HTTP error! Status: ${close.status}`);
+    }
+
     window.location.href = `https://chatcunex888.onrender.com/?token=${token}`;
   } catch (error) {
     console.error("Failed to fetch user:", error);
@@ -107,9 +127,15 @@ const checkId = async (id) => {
     const sellerData = await sellerRes.json();
     const isASeller = userData.data.uid == sellerData.data[0].sellerid;
     const isAOpen = sellerData.data[0].isopen;
+    const sellerid = sellerData.data[0].sellerid;
     console.log(isASeller);
     console.log(isAOpen);
-    return { seller: isASeller, openOrNot: isAOpen };
+    return {
+      seller: isASeller,
+      openOrNot: isAOpen,
+      idofSeller: sellerid,
+      productName: sellerData.data[0].name,
+    };
   } catch (error) {
     console.error("Failed to fetch user:", error);
     return false;
