@@ -20,8 +20,6 @@ const handleDelete = async (productId) => {
   }
 };
 const handleContact = async (productId) => {
-  if (!confirm("คุณแน่ใจหรือไม่ว่าต้องการติดต่อผู้ขาย และจองสินค้านี้?"))
-    return;
   const token = getCookie("token");
   const result = await checkId(productId);
   const amoutOfChat = await checkBuyer();
