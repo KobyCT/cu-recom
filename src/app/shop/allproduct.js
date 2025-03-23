@@ -6,7 +6,7 @@ import Product from "../component/card";
 
 export default async function UnappProducts({ searchpara }) {
   // Retrieve token from cookies
-  const { faculty, category, time, price } = searchpara;
+  const { faculty, category, time, price, page } = searchpara;
   const cookieStore = await cookies();
   const token = cookieStore.get("token").value;
   console.log(faculty);
@@ -26,7 +26,7 @@ export default async function UnappProducts({ searchpara }) {
     qurr += `&sort=price:${price}`;
   }
 
-  qurr += "&page=1"; // Always append page=1
+  qurr += `&page=${page}`; // Always append page=1
 
   console.log(qurr);
 

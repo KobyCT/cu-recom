@@ -54,6 +54,7 @@ export default function MainLayout({ children }) {
     category: "",
     time: "ล่าสุด",
     price: "",
+    page: 1,
   });
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isPriceOpen, setisPriceOpen] = useState(false);
@@ -89,6 +90,22 @@ export default function MainLayout({ children }) {
     timeQ = "";
   }
 
+  const goToNextPage = () => {
+    setqurr((prev) => ({
+      ...prev,
+      page: prev.page + 1,
+    }));
+  };
+
+  const goToPrevPage = () => {
+    if (qurr.page > 1) {
+      setqurr((prev) => ({
+        ...prev,
+        page: prev.page - 1,
+      }));
+    }
+  };
+
   if (qurr.price == "high to low") {
     sortPrice = "DESC";
   } else if (qurr.price == "low to high") {
@@ -97,7 +114,7 @@ export default function MainLayout({ children }) {
     sortPrice = "";
   }
 
-  const qurrry = `faculty=${qurr.faculty}&category=${cat}&time=${timeQ}&price=${sortPrice}`;
+  const qurrry = `faculty=${qurr.faculty}&category=${cat}&time=${timeQ}&price=${sortPrice}&page=${qurr.page}`;
   useEffect(() => {
     router.push(`/shop?${qurrry}`);
   }, [qurr]);
@@ -212,6 +229,62 @@ export default function MainLayout({ children }) {
               <p className="text-gray-500 mt-4">กำลังโหลด...</p>
             </div>
           )}
+        </div>
+      </div>
+      <div className="flex justify-center w-full mb-20">
+        <div className="grid grid-cols-3 gap-1">
+          {/* Previous page button */}
+          <button
+            onClick={goToPrevPage}
+            disabled={qurr.page === 1}
+            className={`w-8 h-8 flex items-center justify-center rounded-full 
+        ${
+          qurr.page === 1
+            ? "text-gray-400 cursor-not-allowed"
+            : "text-gray-600 hover:bg-gray-100"
+        }`}
+            aria-label="Previous page"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+
+          {/* Current page indicator */}
+          <div className="w-8 h-8 rounded-full bg-pink-500 text-white flex items-center justify-center font-medium">
+            {qurr.page}
+          </div>
+
+          {/* Next page button */}
+          <button
+            onClick={goToNextPage}
+            className="w-8 h-8 flex items-center justify-center rounded-full text-gray-600 hover:bg-gray-100"
+            aria-label="Next page"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          </button>
         </div>
       </div>
 

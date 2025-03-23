@@ -83,8 +83,8 @@ const handleContact = async (productId) => {
         },
         body: JSON.stringify({
           userId: result["idofSeller"], // Assuming productData contains the seller's ID
-          text_TH: `สินค้า ${result["productName"]} ของคุณได้ถูกยกเลิกการอนุมัติแล้ว`,
-          text_EN: `Your product "${result["productName"]}" has been unapproved`,
+          text_TH: `สินค้า ${result["productName"]} มีคนสนใจ และแชทกับผู้ซื้อถูกสร้างขึ้นแล้ว`,
+          text_EN: `Your product "${result["productName"]}" has been interested. The chat with buyer has been created`,
         }),
       }
     );
