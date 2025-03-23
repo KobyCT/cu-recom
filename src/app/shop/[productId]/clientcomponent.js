@@ -23,11 +23,13 @@ const handleContact = async (productId) => {
   const token = getCookie("token");
   const result = await checkId(productId);
   const amoutOfChat = await checkBuyer();
-  if (result.seller) {
+  console.log("result");
+  console.log(result);
+  if (result["seller"]) {
     alert("ไม่สามารถทำรายการได้เนื่องจาก ผู้ติดต่อเป็นผู้ขายเอง");
     return;
   }
-  if (!result.isAOpen) {
+  if (!result["openOrNot"]) {
     alert("ไม่สามารถทำรายการได้เนื่องจาก สินค้านี้มีคนจองแล้ว");
     return;
   }
@@ -105,6 +107,8 @@ const checkId = async (id) => {
     const sellerData = await sellerRes.json();
     const isASeller = userData.data.uid == sellerData.data[0].sellerid;
     const isAOpen = sellerData.data[0].isopen;
+    console.log(isASeller);
+    console.log(isAOpen);
     return { seller: isASeller, openOrNot: isAOpen };
   } catch (error) {
     console.error("Failed to fetch user:", error);
@@ -190,7 +194,7 @@ export default function ProductPage({ children, params }) {
 
     // Fetch and update seller status
     checkId(params).then((result) => {
-      setIsSeller(result);
+      setIsSeller(result["seller"]);
     });
   }, [params]);
   console.log(isSeller);
