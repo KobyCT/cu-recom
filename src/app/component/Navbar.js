@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
+
 export default function NavItem({
   shop = false,
   favorites = false,
@@ -13,27 +14,72 @@ export default function NavItem({
   useEffect(() => {
     setToken(getCookie("token")); // Get token only on the client-side
   }, []);
+
   const url = `https://chatcunex888.onrender.com/?token=${token}`;
+
   if (shop) {
     sM = "text-pink-500";
   } else {
     sM = "text-gray-400";
   }
+
   if (favorites) {
     fM = "text-pink-500";
   } else {
     fM = "text-gray-400";
   }
+
   if (profile) {
     pM = "text-pink-500";
   } else {
     pM = "text-gray-400";
   }
+
   if (home) {
     hM = "text-pink-500";
   } else {
     hM = "text-gray-400";
   }
+
+  // Shop link: either a Link component or a disabled div with the same styling
+  const ShopLink = shop ? (
+    <div className={`flex flex-col items-center ${sM} cursor-not-allowed`}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+        />
+      </svg>
+      <span className="text-xs">Shop</span>
+    </div>
+  ) : (
+    <Link href="/shop" className={`flex flex-col items-center ${sM}`}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+        />
+      </svg>
+      <span className="text-xs">Shop</span>
+    </Link>
+  );
+
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
       <div className="container mx-auto flex justify-evenly items-center py-2">
@@ -55,23 +101,7 @@ export default function NavItem({
           <span className="text-xs">Home</span>
         </Link>
 
-        <Link href="/shop" className={`flex flex-col items-center ${sM}`}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-            />
-          </svg>
-          <span className="text-xs">Shop</span>
-        </Link>
+        {ShopLink}
 
         <div className="flex flex-col items-center">
           <Link
