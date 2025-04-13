@@ -51,9 +51,9 @@ export default function Home({ children }) {
       <div className="relative z-10 flex justify-center -mt-16 mb-0">
         <Link
           href={"/shop"}
-          className="w-3/4 py-4 bg-customPink hover:bg-pink-600 text-white text-xl font-medium rounded-full shadow-lg transition text-center"
+          className="w-3/4 py-4 bg-customPink hover:bg-pink-600 text-white text-xl font-medium rounded-full shadow-lg transition text-center font-bold"
         >
-          Go Shopping
+          ไปร้านค้า
         </Link>
       </div>
 

@@ -179,7 +179,7 @@ export default function MainLayout({ children }) {
             <path d="M15 18l-6-6 6-6" />
           </svg>
         </button>
-        <h1 className="text-2xl font-bold">Shop</h1>
+        <h1 className="text-2xl font-bold">ร้านค้า</h1>
         <div>
           <Link href="/shop/search?q=">
             <svg

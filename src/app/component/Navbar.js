@@ -58,7 +58,7 @@ export default function NavItem({
           d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
         />
       </svg>
-      <span className="text-xs">Shop</span>
+      <span className="text-xs">ร้านค้า</span>
     </div>
   ) : (
     <Link href="/shop" className={`flex flex-col items-center ${sM}`}>
@@ -76,7 +76,7 @@ export default function NavItem({
           d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
         />
       </svg>
-      <span className="text-xs">Shop</span>
+      <span className="text-xs">ร้านค้า</span>
     </Link>
   );
 
@@ -98,7 +98,7 @@ export default function NavItem({
               d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
             />
           </svg>
-          <span className="text-xs">Home</span>
+          <span className="text-xs">หน้าหลัก</span>
         </Link>
 
         {ShopLink}
@@ -143,7 +143,7 @@ export default function NavItem({
               d="M5.25211 15.5813H21.7479V14.5021H5.25211V15.5813ZM5.25211 10.9563H21.7479V9.87711H5.25211V10.9563ZM5.25211 6.33127H21.7479V5.25211H5.25211V6.33127ZM26.9125 25.0625L22.5959 20.7459H2.40002C1.73197 20.7459 1.17954 20.5275 0.742733 20.0906C0.305927 19.6538 0.0875244 19.1014 0.0875244 18.4334V2.40002C0.0875244 1.73197 0.305927 1.17954 0.742733 0.742733C1.17954 0.305927 1.73197 0.0875244 2.40002 0.0875244H24.6C25.2681 0.0875244 25.8205 0.305927 26.2573 0.742733C26.6941 1.17954 26.9125 1.73197 26.9125 2.40002V25.0625ZM2.40002 19.6667H23.0584L25.8334 22.4417V2.40002C25.8334 2.09169 25.7049 1.80905 25.4479 1.55211C25.191 1.29516 24.9084 1.16669 24.6 1.16669H2.40002C2.09169 1.16669 1.80905 1.29516 1.55211 1.55211C1.29516 1.80905 1.16669 2.09169 1.16669 2.40002V18.4334C1.16669 18.7417 1.29516 19.0243 1.55211 19.2813C1.80905 19.5382 2.09169 19.6667 2.40002 19.6667Z"
             />
           </svg>
-          <span className="text-xs">Chat</span>
+          <span className="text-xs">แชท</span>
         </Link>
 
         <Link href="/profile" className={`flex flex-col items-center ${pM}`}>
@@ -161,7 +161,7 @@ export default function NavItem({
               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
             />
           </svg>
-          <span className="text-xs">Profile</span>
+          <span className="text-xs">โปรไฟล์</span>
         </Link>
       </div>
     </div>
