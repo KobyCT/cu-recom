@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import HeaderSearchLess from "../component/headerns";
 import NavItem from "../component/Navbar";
 import Link from "next/link";
-
+import Image from "next/image";
 export default function ProfilePage({ children }) {
   const [clientReady, setClientReady] = useState(false);
   useEffect(() => {
@@ -57,9 +57,15 @@ export default function ProfilePage({ children }) {
           <span className="text-lg font-bold">ร้านค้าของฉัน</span>
         </Link>
       </div>
+      <div className="mt-2 bg-white shadow-sm ">
+        <h1 className="p-4 flex items-center border-b border-gray-100">ติดต่อเราได้ที่ IG:@cu_recommerce</h1>
+        <div className="flex items-center">
+        <Image src="/nibba.jpg" alt="Instagram Contact" width={200} height={200} className="p-4" /></div>
+      </div>
 
       {/* Empty Space */}
       <div className="flex-grow"></div>
+      
 
       {/* Bottom Navigation */}
       <NavItem profile={true} />
