@@ -202,7 +202,7 @@ export default function MainLayout({ children }) {
 
       {/* Filter Navigation */}
       <nav className="p-4 flex justify-between items-center fixed top-12 left-0 w-full bg-white shadow-md z-40">
-        <div className="grid grid-cols-3 gap-8 w-full text-center divide-x-2 divide-black">
+        <div className="grid grid-cols-3 gap-8 w-full text-center">
           <button className="" onClick={() => setIsCategoryOpen(true)}>
             หมวดหมู่
           </button>

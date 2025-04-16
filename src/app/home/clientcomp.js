@@ -90,11 +90,11 @@ export default function Home({ children }) {
       <div className="px-4 mb-8">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">New Arrival</h2>
-            <p className="text-gray-500">You've never seen it before!</p>
+            <h2 className="text-3xl font-bold text-gray-900">สินค้ามาใหม่</h2>
+            <p className="text-gray-500">ลองดูสิ!</p>
           </div>
           <Link href="/shop" className="text-gray-700">
-            View all
+            ดูสินค้าอื่นๆ
           </Link>
         </div>
 
