@@ -208,7 +208,7 @@ export default function MainLayout({ children }) {
           </button>
 
           <button className="" onClick={() => setisTimeOpen(true)}>
-            ความเก่า : {qurr.time}
+            ระยะเวลา : {qurr.time}
           </button>
 
           <button className="" onClick={() => setisPriceOpen(true)}>

@@ -131,7 +131,7 @@ export default function NavItem({
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-6"
+            className="h-5 w-7"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
